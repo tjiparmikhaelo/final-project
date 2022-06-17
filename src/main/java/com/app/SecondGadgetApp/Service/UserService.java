@@ -6,6 +6,7 @@ import com.app.SecondGadgetApp.Repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -14,10 +15,13 @@ public class UserService
     @Autowired
     UserRepo userRepo;
 
-    public User add_user(UserDto userDto)
-    {
+    public User add_user(UserDto userDto) throws IOException {
         User user = new User();
-        user.setName(userDto.getName());
+        user.setUsername(userDto.getUsername());
+        user.setFullName(userDto.getFullName());
+        user.setAddress(userDto.getAddress());
+        user.setNoTlp(userDto.getNoTlp());
+        user.setImg(userDto.getImg().getBytes());
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
         userRepo.save(user);
@@ -35,13 +39,15 @@ public class UserService
         return userRepo.findByUserId(user_id);
     }
 
-    public Boolean update_user(UserDto userDto)
-    {
+    public Boolean update_user(UserDto userDto) throws IOException {
         if(userRepo.existsById(userDto.getUserId()))
         {
             User user = new User();
-            user.setUserId(userDto.getUserId());
-            user.setName(userDto.getName());
+            user.setUsername(userDto.getUsername());
+            user.setFullName(userDto.getFullName());
+            user.setAddress(userDto.getAddress());
+            user.setNoTlp(userDto.getNoTlp());
+            user.setImg(userDto.getImg().getBytes());
             user.setEmail(userDto.getEmail());
             user.setPassword(userDto.getPassword());
             userRepo.save(user);

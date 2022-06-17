@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class UserController
     UserService userService;
 
     @PostMapping("add-user")
-    public ResponseEntity<User> add_response(@RequestBody UserDto userDto)
+    public ResponseEntity<User> add_response(UserDto userDto,@RequestParam("img") MultipartFile file) throws Exception
     {
         return new ResponseEntity<User>(userService.add_user(userDto), HttpStatus.CREATED);
     }
@@ -36,7 +37,7 @@ public class UserController
     }
 
     @PutMapping("update-user")
-    public ResponseEntity<UserDto> update_response(@RequestBody UserDto userDto)
+    public ResponseEntity<UserDto> update_response(UserDto userDto, @RequestParam("img") MultipartFile file) throws Exception
     {
         if(userService.update_user(userDto))
         {
