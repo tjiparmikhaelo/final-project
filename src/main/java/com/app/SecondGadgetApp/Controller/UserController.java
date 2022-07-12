@@ -15,6 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.modelmapper.ModelMapper;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
@@ -39,9 +42,18 @@ public class UserController
     }
 
     @PostMapping("/registration-seller")
-    public ResponseEntity<ResultStatus> saveSeller(@RequestBody UsersDTO usersDto) {
+    public ResponseEntity<?> saveSeller(@RequestBody UsersDTO usersDto) {
         Users users = modelMapper.map(usersDto, Users.class);
-        return new ResponseEntity<>(userService.saveSeller(usersDto), HttpStatus.CREATED);
+        userService.saveSeller(usersDto);
+        Map<String, Object> map = new HashMap<>();
+        Users usersDetail = userService.findByEmail(usersDto.getEmail());
+        String roles [] = {"SELLER", "BUYER"};
+//        map.put("role", userService.findByEmail(usersDto.getEmail()).getRoles());
+        map.put("description", "soon update add column");
+        map.put("role", roles);
+        map.put("username", usersDetail.getUsername());
+
+        return new ResponseEntity<>(map, HttpStatus.CREATED);
     }
 
     @GetMapping("display-all")
@@ -76,6 +88,6 @@ public class UserController
     @DeleteMapping("delete-user/{user_id}")
     public ResponseEntity<ResultStatus> delete_response(@PathVariable ("user_id") Long user_id)
     {
-            return new ResponseEntity<>(userService.deleteUser(user_id), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(userService.deleteUser(user_id), HttpStatus.ACCEPTED);
     }
 }

@@ -3,8 +3,10 @@ package com.app.SecondGadgetApp.ServicesImpl;
 import com.app.SecondGadgetApp.Dto.UsersDTO;
 import com.app.SecondGadgetApp.Entity.Role;
 import com.app.SecondGadgetApp.Entity.Users;
+import com.app.SecondGadgetApp.Entity.UsersRole;
 import com.app.SecondGadgetApp.Repository.RoleRepo;
 import com.app.SecondGadgetApp.Repository.UserRepo;
+import com.app.SecondGadgetApp.Repository.UsersRoleRepo;
 import com.app.SecondGadgetApp.Service.UserServices;
 import com.app.SecondGadgetApp.Status.ResultStatus;
 import com.app.SecondGadgetApp.Status.SuccessDataReslut;
@@ -36,12 +38,18 @@ public class UserServicesImpl implements UserServices, UserDetailsService {
     @Autowired
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    UsersRoleRepo usersRoleRepo;
+
+
 
     @Override
     public Users findByEmail(String email) {
 
         return  userRepo.findByEmail(email);
     }
+
+
 
     @Override
     public ResultStatus saveUsers(UsersDTO usersDTO) {
@@ -57,16 +65,23 @@ public class UserServicesImpl implements UserServices, UserDetailsService {
     }
 
     @Override
-    public ResultStatus saveSeller(UsersDTO usersDTO) {
-        Users saveUsers = new Users();
-        saveUsers.setUsername(usersDTO.getUsername());
-        saveUsers.setFullName(usersDTO.getFullName());
-        saveUsers.setEmail(usersDTO.getEmail());
-        List<Role> getRoleById = roleRepo.findByRoleId(2);
-        saveUsers.setRoles(getRoleById);
-        saveUsers.setPassword(bCryptPasswordEncoder.encode(usersDTO.getPassword()));
-        userRepo.save(saveUsers);
-        return new SuccessDataReslut(usersDTO, "Register Success");
+    public void saveSeller(UsersDTO usersDTO) {
+        UsersRole userRole = new UsersRole();
+        Users userExist= userRepo.findByEmail(usersDTO.getEmail());
+
+        usersRoleRepo.nativeInsert(userExist.getUserId(),usersDTO.getRoleId());
+//       return  usersRoleRepo.nativeInsert(userExist.getUserId(),usersDTO.getRoleId());
+
+
+//      Users saveUsers = new Users();
+//        saveUsers.setUsername(usersDTO.getUsername());
+//        saveUsers.setFullName(usersDTO.getFullName());
+//        saveUsers.setEmail(usersDTO.getEmail());
+//        List<Role> getRoleById = roleRepo.findByRoleId(2);
+//        saveUsers.setRoles(getRoleById);
+//        saveUsers.setPassword(bCryptPasswordEncoder.encode(usersDTO.getPassword()));
+//        userRepo.save(saveUsers);
+//        return new SuccessDataReslut(userExist, "Register Success");
     }
 
 
@@ -96,7 +111,6 @@ public class UserServicesImpl implements UserServices, UserDetailsService {
         Users users = userRepo.findByUserId(user_id);
         return new SuccessDataReslut<>(users,"Success Get Users By Id");
     }
-
 
     public ResultStatus update_user(long userId, UsersDTO usersDTO, MultipartFile file) {
 
@@ -133,6 +147,5 @@ public class UserServicesImpl implements UserServices, UserDetailsService {
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         users.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getRoleName())));
         return new org.springframework.security.core.userdetails.User(users.getUsername(), users.getPassword(), authorities);
-
     }
 }

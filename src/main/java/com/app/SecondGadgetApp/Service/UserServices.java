@@ -18,7 +18,7 @@ public interface UserServices {
 //    Optional<Users> getUserById(Integer id);
     ResultStatus saveUsers(UsersDTO usersDTO);
 
-    ResultStatus saveSeller(UsersDTO usersDTO);
+    void saveSeller(UsersDTO usersDTO);
 
     ResultStatus getAllUsers();
     ResultStatus getUserById(Long user_id);
