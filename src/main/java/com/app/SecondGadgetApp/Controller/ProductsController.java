@@ -23,7 +23,7 @@ public class ProductsController
     {
         productsDTO.setPhoto(file);
         productsService.add_product(productsDTO);
-        return new ResponseEntity<>(new ResponseDTO("201", "product added"), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponseDTO("201", "Produk Berhasil Ditambahkan"), HttpStatus.CREATED);
     }
 
     @PostMapping("/preview")
@@ -31,13 +31,13 @@ public class ProductsController
     {
         productsDTO.setPhoto(file);
         productsService.preview_product(productsDTO);
-        return new ResponseEntity<>(new ResponseDTO("201", "preview added"), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponseDTO("201", "Produk Berhasil Ditambahkan"), HttpStatus.CREATED);
     }
 
-    @GetMapping("/display-all")
+    @GetMapping("/all")
     public ResponseEntity<?> display_all()
     {
-        return new ResponseEntity<>(new ResponseDTO("200", "success", productsService.display_all()), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Disimpan", productsService.display_all()), HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/display/{id}")
@@ -50,6 +50,45 @@ public class ProductsController
         else
         {
             return new ResponseEntity<>(new ResponseDTO("404","product not found"), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/detail/{productId}")
+    public ResponseEntity<?> display_detail_product(@PathVariable("productId") Long productId)
+    {
+        if(productsService.display_by_product(productId) != null)
+        {
+            return new ResponseEntity<>(new ResponseDTO("200", "Detail Produk Berhasil Ditampilkan", productsService.display_by_product(productId)), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>(new ResponseDTO("404","Produk Tidak Ditemukan"), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("related/{categoryId}")
+    public ResponseEntity<?> display_related_product(@PathVariable("categoryId") Long categoryId)
+    {
+        if(productsService.display_by_category(categoryId) != null)
+        {
+           return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Ditampilkan", productsService.display_by_category(categoryId)), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>(new ResponseDTO("404", "Produk Tidak Ditemukan"), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/user/{username}")
+    public ResponseEntity<?> display_by_username(@PathVariable("username") String username)
+    {
+        if(productsService.display_by_username(username) != null)
+        {
+            return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Ditampilkan", productsService.display_by_username(username)), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>(new ResponseDTO("404", "Produk Tidak Ditemukan"), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -66,10 +105,10 @@ public class ProductsController
         }
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/edit/{id}")
     public ResponseEntity<?> update_product(@PathVariable("id") Long id, ProductsDTO productsDTO, @RequestParam("photo") MultipartFile file) throws IOException
     {
         productsDTO.setPhoto(file);
-        return new ResponseEntity<>(new ResponseDTO("200", "success", productsService.update_product(id, productsDTO)), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Disimpan", productsService.update_product(id, productsDTO)), HttpStatus.OK);
     }
 }

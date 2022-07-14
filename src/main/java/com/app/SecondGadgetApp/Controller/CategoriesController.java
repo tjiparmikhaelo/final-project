@@ -23,13 +23,13 @@ public class CategoriesController
     {
         categoriesDTO.setPhoto(file);
         categoriesService.add_category(categoriesDTO);
-        return new ResponseEntity<>(new ResponseDTO("201", "category added"), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponseDTO("201", "Kategori Telah Ditambahkan"), HttpStatus.CREATED);
     }
 
-    @GetMapping("/display-all")
+    @GetMapping("/all")
     public ResponseEntity<?> display_all()
     {
-        return new ResponseEntity<>(new ResponseDTO("200", "success", categoriesService.display_all()), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDTO("200", "Kategori Berhasil Ditampilkan", categoriesService.display_all()), HttpStatus.OK);
     }
 
     @GetMapping("/display/{id}")
@@ -45,10 +45,10 @@ public class CategoriesController
         }
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/edit/{id}")
     public ResponseEntity<?> update(@PathVariable("id") Long id, CategoriesDTO categoriesDTO, @RequestParam("photo") MultipartFile file) throws IOException
     {
         categoriesDTO.setPhoto(file);
-        return new ResponseEntity<>(new ResponseDTO("200", "success", categoriesService.update_category(id, categoriesDTO)), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDTO("200", "Kategori Berhasil Disimpan", categoriesService.update_category(id, categoriesDTO)), HttpStatus.OK);
     }
 }

@@ -17,9 +17,7 @@ public interface UserServices {
 //    public Users postUser(Users user);
 //    Optional<Users> getUserById(Integer id);
     ResultStatus saveUsers(UsersDTO usersDTO);
-
     void saveSeller(UsersDTO usersDTO);
-
     ResultStatus getAllUsers();
     ResultStatus getUserById(Long user_id);
     ResultStatus deleteUser(Long user_id);

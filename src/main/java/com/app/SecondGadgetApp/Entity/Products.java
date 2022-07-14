@@ -26,7 +26,7 @@ public class Products
     @Column(name = "category_id")
     private Long categoryId;
 
-    @Column(name = "name")
+    @Column(name = "product_name")
     private String name;
 
     @Column(name = "serial_number")

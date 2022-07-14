@@ -3,6 +3,8 @@ package com.app.SecondGadgetApp.Service;
 import com.app.SecondGadgetApp.Dto.ProductsDTO;
 import com.app.SecondGadgetApp.Entity.Products;
 import com.app.SecondGadgetApp.Repository.ProductsRepo;
+import com.app.SecondGadgetApp.Repository.ViewDetailProductRepo;
+import com.app.SecondGadgetApp.View.VwDetailProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,9 @@ public class ProductsService
 {
     @Autowired
     ProductsRepo productsRepo;
+
+    @Autowired
+    ViewDetailProductRepo viewDetailProductRepo;
 
     public Products add_product(ProductsDTO productsDTO) throws IOException
     {
@@ -59,6 +64,21 @@ public class ProductsService
     public List<Products> display_status(String status)
     {
         return productsRepo.findByStatus(status);
+    }
+
+    public List<VwDetailProduct> display_by_product(Long productId)
+    {
+        return viewDetailProductRepo.findByProductId(productId);
+    }
+
+    public List<VwDetailProduct> display_by_category(Long categoryId)
+    {
+        return viewDetailProductRepo.findByCategoryId(categoryId);
+    }
+
+    public List<VwDetailProduct> display_by_username(String username)
+    {
+        return viewDetailProductRepo.findByUsername(username);
     }
 
     public Products update_product(Long productId, ProductsDTO productsDTO)
