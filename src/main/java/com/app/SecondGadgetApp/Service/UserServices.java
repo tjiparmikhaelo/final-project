@@ -21,4 +21,5 @@ public interface UserServices {
     ResultStatus getAllUsers();
     ResultStatus getUserById(Long user_id);
     ResultStatus deleteUser(Long user_id);
+    ResultStatus getByUsername(String username);
 }

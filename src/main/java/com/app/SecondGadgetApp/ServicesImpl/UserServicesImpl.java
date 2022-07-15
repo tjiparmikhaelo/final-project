@@ -1,15 +1,15 @@
 package com.app.SecondGadgetApp.ServicesImpl;
 
 import com.app.SecondGadgetApp.Dto.UsersDTO;
-import com.app.SecondGadgetApp.Entity.Role;
 import com.app.SecondGadgetApp.Entity.Users;
 import com.app.SecondGadgetApp.Entity.UsersRole;
 import com.app.SecondGadgetApp.Repository.RoleRepo;
 import com.app.SecondGadgetApp.Repository.UserRepo;
 import com.app.SecondGadgetApp.Repository.UsersRoleRepo;
 import com.app.SecondGadgetApp.Service.UserServices;
+import com.app.SecondGadgetApp.Status.ErrorDataResult;
 import com.app.SecondGadgetApp.Status.ResultStatus;
-import com.app.SecondGadgetApp.Status.SuccessDataReslut;
+import com.app.SecondGadgetApp.Status.SuccessDataResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,19 +49,24 @@ public class UserServicesImpl implements UserServices, UserDetailsService {
         return  userRepo.findByEmail(email);
     }
 
-
-
     @Override
     public ResultStatus saveUsers(UsersDTO usersDTO) {
         Users saveUsers = new Users();
         saveUsers.setUsername(usersDTO.getUsername());
         saveUsers.setFullName(usersDTO.getFullName());
         saveUsers.setEmail(usersDTO.getEmail());
-        List<Role> getRoleById = roleRepo.findByRoleId(1);
-        saveUsers.setRoles(getRoleById);
         saveUsers.setPassword(bCryptPasswordEncoder.encode(usersDTO.getPassword()));
-        userRepo.save(saveUsers);
-        return new SuccessDataReslut(usersDTO, "Register Success");
+        Users emailVal = userRepo.findByEmail(usersDTO.getEmail());
+        Users nameVal = userRepo.findByUsername(usersDTO.getUsername());
+        if (emailVal != null){
+            return new ErrorDataResult("Email already exists");
+        }else if(nameVal != null){
+            return new ErrorDataResult("Username already exists");
+        }else{
+            Users saved = userRepo.save(saveUsers);
+            usersRoleRepo.nativeInsert(saved.getUserId(),usersDTO.getRoleId());
+            return new SuccessDataResult(saved, "Register Success");
+        }
     }
 
     @Override
@@ -81,7 +86,7 @@ public class UserServicesImpl implements UserServices, UserDetailsService {
 //        saveUsers.setRoles(getRoleById);
 //        saveUsers.setPassword(bCryptPasswordEncoder.encode(usersDTO.getPassword()));
 //        userRepo.save(saveUsers);
-//        return new SuccessDataReslut(userExist, "Register Success");
+//        return new SuccessDataResult(userExist, "Register Success");
     }
 
 
@@ -97,19 +102,19 @@ public class UserServicesImpl implements UserServices, UserDetailsService {
 //            throw new IllegalArgumentException(String.format("Users already exists", userDto.getUsername()));
 //        }
 //        saveUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
-//        return new SuccessDataReslut(userDto, "Register Success");
+//        return new SuccessDataResult(userDto, "Register Success");
 //    }
 
     @Override
     public ResultStatus getAllUsers() {
         List<Users> users =userRepo.findAll();
-        return new SuccessDataReslut<>(users,"Success Get All Users");
+        return new SuccessDataResult<>(users,"Success Get All Users");
     }
 
     @Override
     public ResultStatus getUserById(Long user_id) {
         Users users = userRepo.findByUserId(user_id);
-        return new SuccessDataReslut<>(users,"Success Get Users By Id");
+        return new SuccessDataResult<>(users,"Success Get Users By Id");
     }
 
     public ResultStatus update_user(long userId, UsersDTO usersDTO, MultipartFile file) {
@@ -123,7 +128,7 @@ public class UserServicesImpl implements UserServices, UserDetailsService {
         users.setPhone(users.getPhone());
         users.setImg(users.getImg());
         userRepo.save(users);
-        return new SuccessDataReslut<>("Success Update Users");
+        return new SuccessDataResult<>("Success Update Users");
     }
 
     @Override
@@ -132,7 +137,7 @@ public class UserServicesImpl implements UserServices, UserDetailsService {
         if (users != null){
             userRepo.deleteById(user_id);
         }
-        return new ResultStatus(true,"Success Deleted Users");
+        return new ResultStatus(200,"Success Deleted Users");
     }
 
     @Override
@@ -147,5 +152,12 @@ public class UserServicesImpl implements UserServices, UserDetailsService {
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         users.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getRoleName())));
         return new org.springframework.security.core.userdetails.User(users.getUsername(), users.getPassword(), authorities);
+    }
+
+    @Override
+    public ResultStatus getByUsername(String username)
+    {
+        Users users = userRepo.findByUsername(username);
+        return new SuccessDataResult<>(users,"Success Get Details User");
     }
 }

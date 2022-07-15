@@ -4,7 +4,7 @@ import com.app.SecondGadgetApp.Dto.ProductsDTO;
 import com.app.SecondGadgetApp.Entity.Products;
 import com.app.SecondGadgetApp.Repository.ProductsRepo;
 import com.app.SecondGadgetApp.Repository.ViewDetailProductRepo;
-import com.app.SecondGadgetApp.View.VwDetailProduct;
+import com.app.SecondGadgetApp.View.ViewDetailProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,14 +24,14 @@ public class ProductsService
     {
         Products products = new Products();
 
-        products.setUserId(productsDTO.getUserId());
+        products.setSellerId(productsDTO.getSellerId());
         products.setCategoryId(productsDTO.getCategoryId());
-        products.setName(productsDTO.getName());
+        products.setProductName(productsDTO.getProductName());
         products.setSerialNumber(productsDTO.getSerialNumber());
         products.setPrice(productsDTO.getPrice());
         products.setDescription(productsDTO.getDescription());
-        products.setStatus("available");
-        products.setPhoto(productsDTO.getPhoto().getBytes());
+        products.setProductStatus("available");
+        products.setProductPhoto(productsDTO.getProductPhoto().getBytes());
 
         return productsRepo.save(products);
     }
@@ -39,14 +39,14 @@ public class ProductsService
     {
         Products products = new Products();
 
-        products.setUserId(productsDTO.getUserId());
+        products.setSellerId(productsDTO.getSellerId());
         products.setCategoryId(productsDTO.getCategoryId());
-        products.setName(productsDTO.getName());
+        products.setProductName(productsDTO.getProductName());
         products.setSerialNumber(productsDTO.getSerialNumber());
         products.setPrice(productsDTO.getPrice());
         products.setDescription(productsDTO.getDescription());
-        products.setStatus("draft");
-        products.setPhoto(productsDTO.getPhoto().getBytes());
+        products.setProductStatus("draft");
+        products.setProductPhoto(productsDTO.getProductPhoto().getBytes());
 
         return productsRepo.save(products);
     }
@@ -63,20 +63,20 @@ public class ProductsService
 
     public List<Products> display_status(String status)
     {
-        return productsRepo.findByStatus(status);
+        return productsRepo.findByProductStatus(status);
     }
 
-    public List<VwDetailProduct> display_by_product(Long productId)
+    public List<ViewDetailProduct> display_by_product(Long productId)
     {
         return viewDetailProductRepo.findByProductId(productId);
     }
 
-    public List<VwDetailProduct> display_by_category(Long categoryId)
+    public List<ViewDetailProduct> display_by_category(Long categoryId)
     {
         return viewDetailProductRepo.findByCategoryId(categoryId);
     }
 
-    public List<VwDetailProduct> display_by_username(String username)
+    public List<ViewDetailProduct> display_by_username(String username)
     {
         return viewDetailProductRepo.findByUsername(username);
     }
@@ -87,13 +87,13 @@ public class ProductsService
 
         try
         {
-            products.setUserId(productsDTO.getUserId());
+            products.setSellerId(productsDTO.getSellerId());
             products.setCategoryId(productsDTO.getCategoryId());
-            products.setName(productsDTO.getName());
+            products.setProductName(productsDTO.getProductName());
             products.setSerialNumber(productsDTO.getSerialNumber());
             products.setPrice(productsDTO.getPrice());
             products.setDescription(productsDTO.getDescription());
-            products.setPhoto(productsDTO.getPhoto().getBytes());
+            products.setProductPhoto(productsDTO.getProductPhoto().getBytes());
         }
         catch (IOException e)
         {
@@ -105,7 +105,7 @@ public class ProductsService
     public void update_status(String status, Long productId)
     {
         Products products = productsRepo.findByProductId(productId);
-        products.setStatus(status);
+        products.setProductStatus(status);
         productsRepo.save(products);
     }
 }

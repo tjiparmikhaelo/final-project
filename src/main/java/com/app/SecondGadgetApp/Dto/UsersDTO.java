@@ -13,6 +13,7 @@ public class UsersDTO
     private String address;
     private String email;
     private String password;
+    private String description;
     private MultipartFile img;
     private int roleId;
 }

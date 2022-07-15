@@ -1,6 +1,6 @@
 package com.app.SecondGadgetApp.Repository;
 
-import com.app.SecondGadgetApp.View.VwDetailProduct;
+import com.app.SecondGadgetApp.View.ViewDetailProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,13 +9,13 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface ViewDetailProductRepo extends JpaRepository<VwDetailProduct, Long>
+public interface ViewDetailProductRepo extends JpaRepository<ViewDetailProduct, Long>
 {
-    List<VwDetailProduct> findAll();
+    List<ViewDetailProduct> findAll();
 
-    List<VwDetailProduct> findByProductId(Long productId);
+    List<ViewDetailProduct> findByProductId(Long productId);
 
-    List<VwDetailProduct> findByCategoryId(Long categoryId);
+    List<ViewDetailProduct> findByCategoryId(Long categoryId);
 
-    List<VwDetailProduct> findByUsername(String username);
+    List<ViewDetailProduct> findByUsername(String username);
 }

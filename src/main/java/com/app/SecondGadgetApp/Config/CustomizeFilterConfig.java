@@ -1,6 +1,6 @@
 package com.app.SecondGadgetApp.Config;
 
-import com.app.SecondGadgetApp.Status.SuccessDataReslut;
+import com.app.SecondGadgetApp.Status.SuccessDataResult;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -74,7 +74,7 @@ public class CustomizeFilterConfig extends UsernamePasswordAuthenticationFilter 
         map.put("access_token", accessToken);
         map.put("refresh_token", refreshToken);
         response.setContentType(APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(), new SuccessDataReslut<>(map,"Success signin"));
+        new ObjectMapper().writeValue(response.getOutputStream(), new SuccessDataResult<>(map,"Success signin"));
         super.successfulAuthentication(request, response,chain,authResult);
 
     }

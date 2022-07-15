@@ -1,0 +1,76 @@
+DETAIL PRODUCT
+create view vw_detail_product as
+select 
+p.product_id ,
+p.product_status ,
+p.product_name ,
+p.price ,
+p.product_photo ,
+c.category_id ,
+c."name" ,
+u.userid ,
+u.full_name ,
+u.username ,
+u.address
+from 
+products p ,
+users u ,
+categories c
+where 
+p.category_id = c.category_id and p.seller_id = u.userid 
+
+DETAIL BID SELLER
+create view vw_detail_bid_seller as
+select
+b.bid_id ,
+b.bid_status ,
+b.bid_price ,
+b.created_at ,
+b.updated_at ,
+p.product_id ,
+p.product_name ,
+p.price ,
+p.product_photo ,
+c.category_id ,
+c."name" ,
+p.seller_id  ,
+u.img ,
+u.full_name ,
+u.username ,
+u.phone ,
+u.address 
+from 
+bids b ,
+products p ,
+users u ,
+categories c
+where 
+b.product_id = p.product_id and p.seller_id = u.userid and p.category_id = c.category_id
+
+DETAIL BID BUYER
+create view vw_detail_bid_buyer as
+select
+b.bid_id ,
+b.bid_status ,
+b.bid_price ,
+b.created_at ,
+b.updated_at ,
+p.product_id ,
+p.product_name ,
+p.price ,
+p.product_photo ,
+c.category_id ,
+c."name" ,
+b.buyer_id  ,
+u.img ,
+u.full_name ,
+u.username ,
+u.phone ,
+u.address 
+from 
+bids b ,
+products p ,
+users u ,
+categories c
+where 
+b.product_id = p.product_id and p.seller_id = u.userid and p.category_id = c.category_id

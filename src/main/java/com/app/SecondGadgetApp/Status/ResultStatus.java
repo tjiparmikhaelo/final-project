@@ -1,21 +1,21 @@
 package com.app.SecondGadgetApp.Status;
 
 public class ResultStatus {
-    private  boolean success;
+    private  Integer status;
 
     private String message;
 
-    public ResultStatus(boolean success){
-        this.success = success;
+    public ResultStatus(Integer status){
+        this.status = status;
     }
 
-    public ResultStatus(boolean success, String message){
-        this(success);
+    public ResultStatus(Integer status, String message){
+        this(status);
         this.message = message;
     }
 
-    public boolean isSuccess(){
-        return this.success;
+    public Integer isStatus(){
+        return this.status;
     }
 
     public String getMessage() {

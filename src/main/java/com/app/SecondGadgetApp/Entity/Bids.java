@@ -20,8 +20,8 @@ public class Bids
     @Column(name = "bid_id")
     private Long bidId;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "buyer_id")
+    private Long buyerId;
 
     @Column(name = "product_id")
     private Long productId;
@@ -29,8 +29,8 @@ public class Bids
     @Column(name = "bid_price")
     private BigDecimal bidPrice;
     
-    @Column(name = "status")
-    private String status;
+    @Column(name = "bid_status")
+    private String bidStatus;
 
     @CreationTimestamp
     @Column(name = "created_at")

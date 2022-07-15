@@ -20,14 +20,14 @@ public class Products
     @Column(name = "product_id")
     private Long productId;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "seller_id")
+    private Long sellerId;
 
     @Column(name = "category_id")
     private Long categoryId;
 
     @Column(name = "product_name")
-    private String name;
+    private String productName;
 
     @Column(name = "serial_number")
     private String serialNumber;
@@ -38,11 +38,11 @@ public class Products
     @Column(name = "description")
     private String description;
 
-    @Column(name = "status")
-    private String status;
+    @Column(name = "product_status")
+    private String productStatus;
 
-    @Column(name = "photo")
-    private byte[] photo;
+    @Column(name = "product_photo")
+    private byte[] productPhoto;
 
     @CreationTimestamp
     @Column(name = "created_at")

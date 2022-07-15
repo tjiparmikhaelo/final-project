@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.modelmapper.ModelMapper;
 
@@ -36,8 +37,8 @@ public class UserController
     ModelMapper modelMapper;
 
     @PostMapping("/registration")
-    public ResponseEntity<ResultStatus> saveUsers(@RequestBody UsersDTO usersDto) {
-        Users users = modelMapper.map(usersDto, Users.class);
+    public ResponseEntity<?> saveUsers(@RequestBody UsersDTO usersDto) {
+//        Users users = modelMapper.map(usersDto, Users.class);
         return new ResponseEntity<>(userService.saveUsers(usersDto), HttpStatus.CREATED);
     }
 
@@ -89,5 +90,12 @@ public class UserController
     public ResponseEntity<ResultStatus> delete_response(@PathVariable ("user_id") Long user_id)
     {
         return new ResponseEntity<>(userService.deleteUser(user_id), HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/details-user")
+    public ResponseEntity<ResultStatus> getUserByUsername(Authentication token)
+    {
+        String username = token.getName();
+        return new ResponseEntity<>(userService.getByUsername(username), HttpStatus.ACCEPTED);
     }
 }

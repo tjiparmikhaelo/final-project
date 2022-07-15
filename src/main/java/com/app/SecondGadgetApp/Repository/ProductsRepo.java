@@ -9,5 +9,5 @@ public interface ProductsRepo extends JpaRepository<Products, Long>
 {
     Products findByProductId(Long productId);
 
-    List<Products> findByStatus(String status);
+    List<Products> findByProductStatus(String status);
 }

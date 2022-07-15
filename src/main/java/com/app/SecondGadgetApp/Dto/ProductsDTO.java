@@ -13,13 +13,13 @@ public class ProductsDTO
 {
     private Long productId;
     private Long categoryId;
-    private Long userId;
-    private String name;
+    private Long sellerId;
+    private String productName;
     private String serialNumber;
     private BigDecimal price;
     private String description;
-    private String status;
-    private MultipartFile photo;
+    private String productStatus;
+    private MultipartFile productPhoto;
     private Date createdAt;
     private Date updatedAt;
 }

@@ -9,17 +9,17 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "vw_detail_produk")
+@Table(name = "vw_detail_product")
 @Setter
 @Getter
-public class VwDetailProduct
+public class ViewDetailProduct
 {
     @Id
     @Column(name = "product_id")
     private Long productId;
 
-    @Column(name = "status")
-    private String status;
+    @Column(name = "product_status")
+    private String productStatus;
 
     @Column(name = "product_name")
     private String productName;
@@ -27,8 +27,8 @@ public class VwDetailProduct
     @Column(name = "price")
     private Long price;
 
-    @Column(name = "photo")
-    private byte[] photo;
+    @Column(name = "product_photo")
+    private byte[] productPhoto;
 
     @Column(name = "category_id")
     private Long categoryId;
@@ -39,12 +39,12 @@ public class VwDetailProduct
     @Column(name = "userid")
     private Long userId;
 
-    @Column(name = "address")
-    private String address;
-
     @Column(name = "full_name")
     private String fullName;
 
     @Column(name = "username")
     private String username;
+
+    @Column(name = "address")
+    private String address;
 }

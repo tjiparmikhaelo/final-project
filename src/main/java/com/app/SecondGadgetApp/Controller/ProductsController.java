@@ -19,17 +19,17 @@ public class ProductsController
     ProductsService productsService;
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(ProductsDTO productsDTO, @RequestParam("photo") MultipartFile file) throws IOException
+    public ResponseEntity<?> add(ProductsDTO productsDTO, @RequestParam("productPhoto") MultipartFile file) throws IOException
     {
-        productsDTO.setPhoto(file);
+        productsDTO.setProductPhoto(file);
         productsService.add_product(productsDTO);
         return new ResponseEntity<>(new ResponseDTO("201", "Produk Berhasil Ditambahkan"), HttpStatus.CREATED);
     }
 
     @PostMapping("/preview")
-    public ResponseEntity<?> preview(ProductsDTO productsDTO, @RequestParam("photo") MultipartFile file) throws IOException
+    public ResponseEntity<?> preview(ProductsDTO productsDTO, @RequestParam("productPhoto") MultipartFile file) throws IOException
     {
-        productsDTO.setPhoto(file);
+        productsDTO.setProductPhoto(file);
         productsService.preview_product(productsDTO);
         return new ResponseEntity<>(new ResponseDTO("201", "Produk Berhasil Ditambahkan"), HttpStatus.CREATED);
     }
@@ -108,7 +108,7 @@ public class ProductsController
     @PutMapping("/edit/{id}")
     public ResponseEntity<?> update_product(@PathVariable("id") Long id, ProductsDTO productsDTO, @RequestParam("photo") MultipartFile file) throws IOException
     {
-        productsDTO.setPhoto(file);
+        productsDTO.setProductPhoto(file);
         return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Disimpan", productsService.update_product(id, productsDTO)), HttpStatus.OK);
     }
 }

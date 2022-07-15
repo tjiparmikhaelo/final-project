@@ -36,6 +36,9 @@ public class Users
     @Column(name = "user_password", length = 100)
     private String password;
 
+    @Column(name = "description")
+    private String description;
+
     @Lob
     private String img;
 

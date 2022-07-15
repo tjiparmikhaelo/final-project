@@ -16,11 +16,11 @@ public class BidsController
     @Autowired
     BidsService bidsService;
 
-    @PostMapping("/add")
+    @PostMapping("/buyer/add")
     public ResponseEntity<?> add(@RequestBody BidsDTO bidsDTO)
     {
         bidsService.add_bid(bidsDTO);
-        return new ResponseEntity<>(new ResponseDTO("201", "bid added"), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponseDTO("201", "Penawaran Berhasil Ditambahkan"), HttpStatus.CREATED);
     }
 
     @GetMapping("/display-all")
@@ -67,5 +67,31 @@ public class BidsController
     public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody BidsDTO bidsDTO)
     {
         return new ResponseEntity<>(new ResponseDTO("200", "success", bidsService.update_bid(id,bidsDTO)), HttpStatus.OK);
+    }
+
+    @GetMapping("/buyer/detail/{bidId}")
+    public ResponseEntity<?> display_bid_buyer(@PathVariable("bidId") Long bidId)
+    {
+        if(bidsService.display_bid_buyer(bidId) != null)
+        {
+            return new ResponseEntity<>(new ResponseDTO("200", "Penawaran Berhasil Ditampilkan", bidsService.display_bid_buyer(bidId)), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>(new ResponseDTO("404", "Penawaran Tidak Ditemukan"), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/buyer/all/{sellerId}")
+    public ResponseEntity<?> display_all_buyer(@PathVariable("sellerId") Long sellerId)
+    {
+        if(bidsService.display_all_buyer(sellerId) != null)
+        {
+            return new ResponseEntity<>(new ResponseDTO("200", "Penawaran Berhasil Ditampilkan", bidsService.display_all_buyer(sellerId)), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>(new ResponseDTO("404", "Penawaran Tidak Ditemukan"), HttpStatus.BAD_REQUEST);
+        }
     }
 }

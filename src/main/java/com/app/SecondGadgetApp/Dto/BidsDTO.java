@@ -11,10 +11,10 @@ import java.util.Date;
 public class BidsDTO
 {
     private Long bidId;
-    private Long userId;
+    private Long buyerId;
     private Long productId;
     private BigDecimal bidPrice;
-    private String status;
+    private String bidStatus;
     private Date createdAt;
     private Date updatedAt;
 }
