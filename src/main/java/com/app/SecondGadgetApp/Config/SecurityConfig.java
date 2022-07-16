@@ -30,16 +30,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
      private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 //    uncomment when deploy to heroku
-    private CorsConfigurationSource configurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("*");
-        config.addAllowedHeader(config.ALL);
-        config.addAllowedHeader(config.ALL);
-        config.addAllowedMethod(config.ALL);
-        source.registerCorsConfiguration("/**", config);
-        return source;
-    }
+//    private CorsConfigurationSource configurationSource() {
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        CorsConfiguration config = new CorsConfiguration();
+//        config.addAllowedOrigin("*");
+//        config.addAllowedHeader(config.ALL);
+//        config.addAllowedHeader(config.ALL);
+//        config.addAllowedMethod(config.ALL);
+//        source.registerCorsConfiguration("/**", config);
+//        return source;
+//    }
 //    uncomment when deploy to heroku
     @Override
     protected void configure(HttpSecurity http) throws Exception
@@ -48,10 +48,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
         customAuthenticationFilter.setFilterProcessesUrl("/login");
         http.csrf().disable();
 //        uncomment when deploy to heroku
-        http.cors().configurationSource(configurationSource()).and()
-                .requiresChannel()
-                .anyRequest()
-                .requiresSecure();
+//        http.cors().configurationSource(configurationSource()).and()
+//                .requiresChannel()
+//                .anyRequest()
+//                .requiresSecure();
 //        uncomment when deploy to Heroku
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers(
