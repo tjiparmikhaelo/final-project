@@ -56,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers(
                 "/user/register",
-                "/user/registration-seller",
+                "/user/register-seller",
                 "/user/display-all",
                 "/user/display-by-id/{user_id}",
                 "/user/profile/{username}",
