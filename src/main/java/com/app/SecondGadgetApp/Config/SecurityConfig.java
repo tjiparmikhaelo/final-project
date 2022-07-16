@@ -63,12 +63,40 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 "/user/verification",
                 "/user/update-user/{userId}",
                 "/user/delete-user/{user_id}",
-                "/city/**",
-                "/swagger-ui.html/**"
+                "/city/**"
+        ).permitAll();
+        http.authorizeRequests().antMatchers(
+                "/category/add",
+                "/category/all",
+                "/category/edit/{id}",
+                "/category/delete/{id}"
+        ).permitAll();
+        http.authorizeRequests().antMatchers(
+                "/product/add",
+                "/product/latest",
+                "/product/related/{id}",
+                "/product/user/{username}",
+                "/product/detail/{id}",
+                "/product/edit/{id}"
         ).permitAll();
         http.authorizeRequests().antMatchers("/login/**").permitAll();
-        http.authorizeRequests().antMatchers("/product/display-all").hasAnyAuthority("BUYER");
-        http.authorizeRequests().antMatchers("/product/add").hasAnyAuthority("SELLER");
+        http.authorizeRequests().antMatchers(
+                "/product/display-all",
+                        "/product/latest",
+                        "/product/related/{id}",
+                        "/product/user/{username}",
+                        "/product/detail/{id}"
+        )
+                .hasAnyAuthority("BUYER");
+        http.authorizeRequests().antMatchers(
+                "/category/add",
+                        "/category/all",
+                        "/category/edit/{id}",
+                        "/category/delete/{id}",
+                        "/product/add",
+                        "/product/edit/{id}"
+        )
+                .hasAnyAuthority("SELLER");
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomizeAuthorFilterConfig(), UsernamePasswordAuthenticationFilter.class);
