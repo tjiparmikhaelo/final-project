@@ -20,11 +20,16 @@
 //    @Column(name = "bid_id")
 //    private Long bidId;
 //
-//    @Column(name = "buyer_id")
-//    private Long buyerId;
+//    @OneToMany(
+//            mappedBy = "bids",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true
+//    )
+//    @Column(name = "user_id")
+//    private Users users;
 //
 //    @Column(name = "product_id")
-//    private Long productId;
+//    private Products products;
 //
 //    @Column(name = "bid_price")
 //    private BigDecimal bidPrice;

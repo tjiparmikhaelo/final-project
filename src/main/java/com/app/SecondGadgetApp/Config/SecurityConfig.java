@@ -26,11 +26,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 
     @Autowired
     private final UserDetailsService userDetailsService;
-     @Autowired
-     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 //    uncomment when deploy to heroku
-    private CorsConfigurationSource configurationSource() {
+    private CorsConfigurationSource configurationSource()
+    {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOrigin("*");

@@ -44,25 +44,54 @@ public class ProductsController {
     @GetMapping("/latest")
     public ResponseEntity<?> latest_product()
     {
-        return new ResponseEntity<>(productsService.latest_product(), HttpStatus.OK);
+        if(productsService.latest_product() != null)
+        {
+            return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Ditampilkan", productsService.latest_product()), HttpStatus.OK);
+
+        }
+        else
+        {
+            return new ResponseEntity<>(new ResponseDTO("404", "Produk Gagal Ditampilkan"), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/related/{id}")
     public ResponseEntity<?> related_product(@PathVariable("id") Long categoryId)
     {
-        return new ResponseEntity<>(productsService.related_product(categoryId), HttpStatus.OK);
+        if(productsService.related_product(categoryId) != null)
+        {
+            return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Ditampilkan", productsService.related_product(categoryId)), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>(new ResponseDTO("404", "Produk Gagal Ditampilkan"), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/user/{username}")
     public ResponseEntity<?> product_by_user(@PathVariable("username") String username)
     {
-        return new ResponseEntity<>(productsService.product_by_user(username), HttpStatus.OK);
+        if(productsService.product_by_user(username) != null)
+        {
+            return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Ditampilkan", productsService.product_by_user(username)), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>(new ResponseDTO("404", "Produk Gagal Ditampilkan"), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/detail/{id}")
     public ResponseEntity<?> detail_product(@PathVariable("id") Long productId)
     {
-        return new ResponseEntity<>(productsService.detail_product(productId), HttpStatus.OK);
+        if(productsService.detail_product(productId) != null)
+        {
+            return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Ditampilkan", productsService.detail_product(productId)), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>(new ResponseDTO("404", "Produk Gagal Ditampilkan"), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PatchMapping("/edit/{id}")

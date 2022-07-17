@@ -16,6 +16,10 @@ public class Categories
     @Column(name = "category_id")
     private Long categoryId;
 
+    @Lob
+    @Column(name = "image")
+    private String image;
+
     @Column(name = "name")
     private String categoryName;
 }

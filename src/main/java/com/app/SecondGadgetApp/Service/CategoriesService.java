@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CategoriesService
@@ -14,10 +15,15 @@ public class CategoriesService
     @Autowired
     CategoriesRepo categoriesRepo;
 
+    @Autowired
+    CloudinaryStorageServices cloudinaryStorageServices;
+
     public Categories add_category(CategoriesDTO categoriesDTO)
     {
         Categories categories = new Categories();
         categories.setCategoryName(categoriesDTO.getCategoryName());
+        Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageServices.upload(categoriesDTO.getImage()).getData();
+        categories.setImage(uploadImage.get("url").toString());
 
         return categoriesRepo.save(categories);
     }
@@ -31,6 +37,8 @@ public class CategoriesService
     {
         Categories update = categoriesRepo.findByCategoryId(id);
         update.setCategoryName(categoriesDTO.getCategoryName());
+        Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageServices.upload(categoriesDTO.getImage()).getData();
+        update.setImage(uploadImage.get("url").toString());
 
         return categoriesRepo.save(update);
     }

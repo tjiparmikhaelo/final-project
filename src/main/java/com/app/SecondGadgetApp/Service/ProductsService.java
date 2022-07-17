@@ -8,7 +8,7 @@ import com.app.SecondGadgetApp.Entity.Users;
 import com.app.SecondGadgetApp.Repository.CategoriesRepo;
 import com.app.SecondGadgetApp.Repository.ImageProductsRepo;
 import com.app.SecondGadgetApp.Repository.ProductsRepo;
-import com.app.SecondGadgetApp.Repository.UserRepo;
+import com.app.SecondGadgetApp.Repository.UsersRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,7 +26,7 @@ public class ProductsService
     @Autowired
     CloudinaryStorageServices cloudinaryStorageServices;
     @Autowired
-    UserRepo userRepo;
+    UsersRepo usersRepo;
     @Autowired
     CategoriesRepo categoriesRepo;
 
@@ -47,7 +47,7 @@ public class ProductsService
     {
         Products products = new Products();
         Categories categories = categoriesRepo.findByCategoryId(productsDTO.getCategoryId());
-        Users users = userRepo.findByUserId(productsDTO.getUserId());
+        Users users = usersRepo.findByUserId(productsDTO.getUserId());
 
         products.setProductName(productsDTO.getProductName());
         products.setCategories(categories);
@@ -84,7 +84,7 @@ public class ProductsService
     {
         Products products = productsRepo.findByProductId(productId);
         Categories categories = categoriesRepo.findByCategoryId(products.getCategories().getCategoryId());
-        Users users = userRepo.findByUserId(products.getUsers().getUserId());
+        Users users = usersRepo.findByUserId(products.getUsers().getUserId());
 
         products.setProductName(productsDTO.getProductName());
         products.setCategories(categories);
