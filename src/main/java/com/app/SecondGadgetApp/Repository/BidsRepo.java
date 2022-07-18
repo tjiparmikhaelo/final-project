@@ -1,9 +1,14 @@
-//package com.app.SecondGadgetApp.Repository;
-//
-//import com.app.SecondGadgetApp.Entity.Bids;
-//import org.springframework.data.jpa.repository.JpaRepository;
-//
-//public interface BidsRepo extends JpaRepository<Bids, Long>
-//{
-//    Bids findByBidId(Long bidId);
-//}
+package com.app.SecondGadgetApp.Repository;
+
+import com.app.SecondGadgetApp.Entity.Bids;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface BidsRepo extends JpaRepository<Bids, Long>
+{
+    Bids findByBidId(Long bidId);
+    List<Bids> findByUsersUserId(Long userId);
+    List<Bids> findByProductsProductId(Long productId);
+    List<Bids> findByProductsUsersUserId(Long userId);
+}

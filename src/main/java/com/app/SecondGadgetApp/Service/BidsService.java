@@ -1,99 +1,74 @@
-//package com.app.SecondGadgetApp.Service;
-//
-//import com.app.SecondGadgetApp.Dto.BidsDTO;
-//import com.app.SecondGadgetApp.Entity.Bids;
-//import com.app.SecondGadgetApp.Repository.BidsRepo;
-//import com.app.SecondGadgetApp.View.ViewDetailBidBuyer;
-//import com.app.SecondGadgetApp.View.ViewDetailBidSeller;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.List;
-//
-//@Service
-//public class BidsService
-//{
-//    @Autowired
-//    BidsRepo bidsRepo;
-//
-//    @Autowired
-//    ProductsService productsService;
-//
-//    @Autowired
-//    ViewDetailBidBuyerRepo viewDetailBidBuyerRepo;
-//
-//    @Autowired
-//    ViewDetailBidSellerRepo viewDetailBidSellerRepo;
-//
-//    public Bids add_bid(BidsDTO bidsDTO)
-//    {
-//        Bids bids = new Bids();
-//
-//        bids.setBuyerId(bidsDTO.getBuyerId());
-//        bids.setProductId(bidsDTO.getProductId());
-//        bids.setBidPrice(bidsDTO.getBidPrice());
-//        bids.setBidStatus("pending");
-//        return bidsRepo.save(bids);
-//    }
-//
-//    public List<Bids> display_all()
-//    {
-//        return bidsRepo.findAll();
-//    }
-//
-//    public Bids display_bid(Long bidId)
-//    {
-//        return bidsRepo.findByBidId(bidId);
-//    }
-//
-//    public Bids update_bid(Long bidId, BidsDTO bidsDTO)
-//    {
-//        Bids bids = bidsRepo.findByBidId(bidId);
-//        try
-//        {
-//            bids.setBuyerId(bidsDTO.getBuyerId());
-//            bids.setProductId(bidsDTO.getProductId());
-//            bids.setBidPrice(bidsDTO.getBidPrice());
-//
-//        }
-//        catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }
-//        return bidsRepo.save(bids);
-//    }
-//    //method to update the status, no endpoint
-//    public void update_status(String status, Long bidId)
-//    {
-//        Bids bids = bidsRepo.findByBidId(bidId);
-//        bids.setBidStatus(status);
-//        bidsRepo.save(bids);
-//    }
-//
-//    public void accept_bid(Long bidId)
-//    {
-//        productsService.update_status("bidded", bidId);
-//        update_status("processed", bidId);
-//    }
-//
-//    public void transaction_accepted (Long bidId)
-//    {
-//        productsService.update_status("sold", bidId);
-//        update_status("accepted", bidId);
-//    }
-//
-//    public void transaction_declined (Long bidId)
-//    {
-//        update_status("declined", bidId);
-//    }
-//
-//    public List<ViewDetailBidBuyer> display_bid_buyer(Long bidId)
-//    {
-//        return viewDetailBidBuyerRepo.findByBidId(bidId);
-//    }
-//
-//    public List<ViewDetailBidSeller> display_all_buyer(Long sellerId)
-//    {
-//        return viewDetailBidSellerRepo.findBySellerId(sellerId);
-//    }
-//}
+package com.app.SecondGadgetApp.Service;
+
+import com.app.SecondGadgetApp.Dto.BidsDTO;
+import com.app.SecondGadgetApp.Entity.Bids;
+import com.app.SecondGadgetApp.Entity.Products;
+import com.app.SecondGadgetApp.Entity.Users;
+import com.app.SecondGadgetApp.Repository.BidsRepo;
+import com.app.SecondGadgetApp.Repository.ProductsRepo;
+import com.app.SecondGadgetApp.Repository.UsersRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
+
+@Service
+public class BidsService
+{
+    @Autowired
+    BidsRepo bidsRepo;
+    @Autowired
+    UsersRepo usersRepo;
+    @Autowired
+    ProductsRepo productsRepo;
+
+    public Bids add_bid(BidsDTO bidsDTO)
+    {
+        Bids bids = new Bids();
+        Users users = usersRepo.findByUserId(bidsDTO.getUserId());
+        Products products = productsRepo.findByProductId(bidsDTO.getProductId());
+
+        bids.setUsers(users);
+        bids.setProducts(products);
+        bids.setBidPrice(bidsDTO.getBidPrice());
+        bids.setBidStatus("pending");
+
+        return bidsRepo.save(bids);
+    }
+
+    public List<Bids> show_all_bid_buyer(Long userId)
+    {
+        return bidsRepo.findByProductsUsersUserId(userId);
+    }
+
+    public Bids edit_bid_buyer(Long bidId, BidsDTO bidsDTO)
+    {
+        Bids bids = bidsRepo.findByBidId(bidId);
+
+        bids.setBidStatus(bidsDTO.getBidStatus());
+        bids.setBidPrice(bidsDTO.getBidPrice());
+
+        return bidsRepo.save(bids);
+    }
+
+    public List<Bids> show_all_bid_seller(Long userId)
+    {
+        return bidsRepo.findByUsersUserId(userId);
+    }
+
+    public Bids edit_bid_seller(Long bidId, BidsDTO bidsDTO)
+    {
+        Bids bids = bidsRepo.findByBidId(bidId);
+
+        bids.setBidStatus(bidsDTO.getBidStatus());
+        bids.setBidPrice(bidsDTO.getBidPrice());
+
+        return bidsRepo.save(bids);
+    }
+
+    public Bids show_detail_bid_buyer_seller(Long bidId)
+    {
+        return bidsRepo.findByBidId(bidId);
+    }
+}

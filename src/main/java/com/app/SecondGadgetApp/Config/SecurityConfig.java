@@ -78,7 +78,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 "/product/related/{id}",
                 "/product/user/{username}",
                 "/product/detail/{id}",
-                "/product/edit/{id}"
+                "/product/edit/{id}",
+                "/product/edit/status/{id}"
+        ).permitAll();
+        http.authorizeRequests().antMatchers(
+                "bid/buyer/add",
+                "bid/buyer/all/{id}",
+                "bid/buyer/edit/{id}",
+                "bid/seller/all/{id}",
+                "bid/seller/edit/{id}",
+                "bid/detail/{id}"
         ).permitAll();
         http.authorizeRequests().antMatchers("/login/**").permitAll();
         http.authorizeRequests().antMatchers(
@@ -86,7 +95,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                         "/product/latest",
                         "/product/related/{id}",
                         "/product/user/{username}",
-                        "/product/detail/{id}"
+                        "/product/detail/{id}",
+                        "bid/buyer/add",
+                        "bid/buyer/all/{id}",
+                        "bid/buyer/edit/{id}",
+                        "bid/detail/{id}"
         )
                 .hasAnyAuthority("BUYER");
         http.authorizeRequests().antMatchers(
@@ -95,7 +108,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                         "/category/edit/{id}",
                         "/category/delete/{id}",
                         "/product/add",
-                        "/product/edit/{id}"
+                        "/product/edit/{id}",
+                        "bid/seller/all/{id}",
+                        "bid/seller/edit/{id}",
+                        "bid/detail/{id}"
         )
                 .hasAnyAuthority("SELLER");
         http.authorizeRequests().anyRequest().authenticated();

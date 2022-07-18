@@ -1,6 +1,6 @@
 package com.app.SecondGadgetApp.Service;
 
-import com.app.SecondGadgetApp.Dto.Products.ProductsDTO;
+import com.app.SecondGadgetApp.Dto.ProductsDTO;
 import com.app.SecondGadgetApp.Entity.Categories;
 import com.app.SecondGadgetApp.Entity.ImageProducts;
 import com.app.SecondGadgetApp.Entity.Products;
@@ -29,6 +29,11 @@ public class ProductsService
     UsersRepo usersRepo;
     @Autowired
     CategoriesRepo categoriesRepo;
+
+
+    public List<Products>productWithFilter(String productName){
+    return productsRepo.findByProductName(productName);
+    }
 
     public String imageProduct(List<MultipartFile> image, Products products)
     {
@@ -91,8 +96,17 @@ public class ProductsService
         products.setPrice(productsDTO.getPrice());
         products.setSerialNumber(productsDTO.getSerialNumber());
         products.setDescription(productsDTO.getDescription());
-        products.setProductStatus("available");
+        products.setProductStatus(productsDTO.getProductStatus());
         products.setUsers(users);
+
+        return productsRepo.save(products);
+    }
+
+    public Products edit_product_status(Long productId, ProductsDTO productsDTO)
+    {
+        Products products = productsRepo.findByProductId(productId);
+
+        products.setProductStatus(productsDTO.getProductStatus());
 
         return productsRepo.save(products);
     }

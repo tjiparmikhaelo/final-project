@@ -1,6 +1,6 @@
 package com.app.SecondGadgetApp.Controller;
 
-import com.app.SecondGadgetApp.Dto.Products.ProductsDTO;
+import com.app.SecondGadgetApp.Dto.ProductsDTO;
 import com.app.SecondGadgetApp.Dto.ResponseDTO;
 import com.app.SecondGadgetApp.Entity.Products;
 import com.app.SecondGadgetApp.Repository.ImageProductsRepo;
@@ -40,7 +40,25 @@ public class ProductsController {
         productsService.imageProduct(photo4, products);
         return new ResponseEntity<>(new ResponseDTO("201", "Produk Berhasil Ditambahkan"), HttpStatus.CREATED);
     }
-
+    @GetMapping("/withfilter")
+    public ResponseEntity<?> productsWithFilter(
+            @RequestParam(value = "productName", required = false) String productName,
+            @RequestParam(value = "categoryId", required = false) Long categoryId
+    )
+    {
+        if(productName == null || productName.isEmpty())
+        {
+            return new ResponseEntity<>(productsService.latest_product(), HttpStatus.OK);
+        }
+        else if (categoryId != null)
+        {
+            return new ResponseEntity<>(productsService.related_product(categoryId), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>(productsService.latest_product(), HttpStatus.BAD_REQUEST);
+        }
+    }
     @GetMapping("/latest")
     public ResponseEntity<?> latest_product()
     {
@@ -94,11 +112,18 @@ public class ProductsController {
         }
     }
 
-    @PatchMapping("/edit/{id}")
+    @PutMapping("/edit/{id}")
     public ResponseEntity<?> edit_product(@PathVariable("id") Long productId, @RequestBody ProductsDTO productsDTO)
     {
         productsService.edit_product(productId, productsDTO);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Diupdate"), HttpStatus.OK);
+    }
+
+    @PutMapping("/edit/status/{id}")
+    public ResponseEntity<?> edit_status_product(@PathVariable("id") Long productId, @RequestBody ProductsDTO productsDTO)
+    {
+        productsService.edit_product_status(productId, productsDTO);
+        return new ResponseEntity<>(new ResponseDTO("200", "Status Produk Telah Diupdate"), HttpStatus.OK);
     }
 }
 

@@ -11,6 +11,7 @@ import java.util.List;
 @Transactional
 public interface ProductsRepo extends JpaRepository<Products, Long>
 {
+    List<Products> findByProductName(String productName);
     Products findByProductId(Long productId);
     List<Products> findByUsersUsername(String username);
     List<Products> findByCategoriesCategoryId(Long categoryId);
