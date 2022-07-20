@@ -59,8 +59,7 @@ public class ProductsService
 
     public List<ViewProductFilter> product_filter_product_name(String productName)
     {
-//        String chaining = "'%"+productName+"%'";
-            return vwProductRepo.findByProductNameLike(productName);
+        return vwProductRepo.findByProductNameLike(productName);
     }
 
     public List<ViewProductFilter> product_filter_category_name(String categoryName)
@@ -75,7 +74,7 @@ public class ProductsService
 
     public List<Products> latest_product()
     {
-        return productsRepo.findAll();
+        return productsRepo.ProductDesc();
     }
 
     public List<Products> related_product(Long categoryId)
