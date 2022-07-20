@@ -5,14 +5,17 @@ import com.app.SecondGadgetApp.Entity.*;
 import com.app.SecondGadgetApp.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+@Transactional
 @Service
-public class ProductsService {
+public class ProductsService
+{
     @Autowired
     ProductsRepo productsRepo;
     @Autowired
@@ -26,7 +29,8 @@ public class ProductsService {
     @Autowired
     VwProductRepo vwProductRepo;
 
-    public String imageProduct(List<MultipartFile> image, Products products) {
+    public String imageProduct(List<MultipartFile> image, Products products)
+    {
         ImageProducts imageProducts = new ImageProducts();
         for (int i = 0; i < image.size(); i++) {
             Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageServices.upload(image.get(i)).getData();

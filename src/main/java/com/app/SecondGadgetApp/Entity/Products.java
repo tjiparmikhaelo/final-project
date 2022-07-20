@@ -37,7 +37,6 @@ public class Products
     @Column(name = "product_status")
     private String productStatus;
 
-    @Lob
     @Column(name = "image_product")
     private String imageProduct;
 
