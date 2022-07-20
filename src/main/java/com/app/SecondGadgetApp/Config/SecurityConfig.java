@@ -89,6 +89,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 "bid/seller/edit/{id}",
                 "bid/detail/{id}"
         ).permitAll();
+        http.authorizeRequests().antMatchers(
+                "wishlist/buyer/add",
+                "wishlist/check/{userId}/{productId}",
+                "wishlist/all/{id}",
+                "wishlist/mini/{id}"
+        ).permitAll();
+        http.authorizeRequests().antMatchers(
+                "notification/add",
+                "notification/buyer/all/{id}",
+                "notification/seller/all/{id}"
+        ).permitAll();
         http.authorizeRequests().antMatchers("/login/**").permitAll();
         http.authorizeRequests().antMatchers(
                 "/product/display-all",
