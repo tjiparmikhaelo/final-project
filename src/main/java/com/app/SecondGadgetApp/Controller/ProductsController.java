@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -27,10 +28,10 @@ public class ProductsController {
     @PostMapping("/add")
     public ResponseEntity<?> add_product(
             ProductsDTO productsDTO,
-            @RequestParam(value = "photo1") List<MultipartFile> photo1,
-            @RequestParam(value = "photo2") List<MultipartFile> photo2,
-            @RequestParam(value = "photo3") List<MultipartFile> photo3,
-            @RequestParam(value = "photo4") List<MultipartFile> photo4
+            @RequestParam(value = "photo1", required = true) List<MultipartFile> photo1,
+            @RequestParam(value = "photo2", required = false) List<MultipartFile> photo2,
+            @RequestParam(value = "photo3", required = false) List<MultipartFile> photo3,
+            @RequestParam(value = "photo4", required = false) List<MultipartFile> photo4
             )
     {
         Products products = productsService.add_product(productsDTO);
@@ -43,20 +44,26 @@ public class ProductsController {
     @GetMapping("/withfilter")
     public ResponseEntity<?> productsWithFilter(
             @RequestParam(value = "productName", required = false) String productName,
-            @RequestParam(value = "categoryId", required = false) Long categoryId
-    )
+            @RequestParam(value = "categoryName", required = false) String categoryName,
+            @RequestParam(value = "minPrice", required = false)BigDecimal minPrice,
+            @RequestParam(value = "maxPrice", required = false)BigDecimal maxPrice
+            )
     {
-        if(productName == null || productName.isEmpty())
+        if(productName != null)
         {
-            return new ResponseEntity<>(productsService.latest_product(), HttpStatus.OK);
+            return new ResponseEntity<>(productsService.product_filter_product_name(productName), HttpStatus.OK);
         }
-        else if (categoryId != null)
+        else if(categoryName != null)
         {
-            return new ResponseEntity<>(productsService.related_product(categoryId), HttpStatus.OK);
+            return new ResponseEntity<>(productsService.product_filter_category_name(categoryName), HttpStatus.OK);
+        }
+        else if (minPrice != null && maxPrice != null)
+        {
+            return new ResponseEntity<>(productsService.product_filter_price(minPrice, maxPrice), HttpStatus.OK);
         }
         else
         {
-            return new ResponseEntity<>(productsService.latest_product(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseDTO("404", "Produk Gagal Ditampilkan"), HttpStatus.BAD_REQUEST);
         }
     }
     @GetMapping("/latest")

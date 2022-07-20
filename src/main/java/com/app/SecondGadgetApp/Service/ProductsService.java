@@ -1,24 +1,18 @@
 package com.app.SecondGadgetApp.Service;
 
 import com.app.SecondGadgetApp.Dto.ProductsDTO;
-import com.app.SecondGadgetApp.Entity.Categories;
-import com.app.SecondGadgetApp.Entity.ImageProducts;
-import com.app.SecondGadgetApp.Entity.Products;
-import com.app.SecondGadgetApp.Entity.Users;
-import com.app.SecondGadgetApp.Repository.CategoriesRepo;
-import com.app.SecondGadgetApp.Repository.ImageProductsRepo;
-import com.app.SecondGadgetApp.Repository.ProductsRepo;
-import com.app.SecondGadgetApp.Repository.UsersRepo;
+import com.app.SecondGadgetApp.Entity.*;
+import com.app.SecondGadgetApp.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
 @Service
-public class ProductsService
-{
+public class ProductsService {
     @Autowired
     ProductsRepo productsRepo;
     @Autowired
@@ -29,17 +23,12 @@ public class ProductsService
     UsersRepo usersRepo;
     @Autowired
     CategoriesRepo categoriesRepo;
+    @Autowired
+    VwProductRepo vwProductRepo;
 
-
-    public List<Products>productWithFilter(String productName){
-    return productsRepo.findByProductName(productName);
-    }
-
-    public String imageProduct(List<MultipartFile> image, Products products)
-    {
+    public String imageProduct(List<MultipartFile> image, Products products) {
         ImageProducts imageProducts = new ImageProducts();
-        for (int i = 0; i < image.size(); i++)
-        {
+        for (int i = 0; i < image.size(); i++) {
             Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageServices.upload(image.get(i)).getData();
             imageProducts.setImageUrl(uploadImage.get("url").toString());
             imageProducts.setProducts(products);
@@ -48,8 +37,7 @@ public class ProductsService
         return imageProducts.getImageUrl();
     }
 
-    public Products add_product(ProductsDTO productsDTO)
-    {
+    public Products add_product(ProductsDTO productsDTO) {
         Products products = new Products();
         Categories categories = categoriesRepo.findByCategoryId(productsDTO.getCategoryId());
         Users users = usersRepo.findByUserId(productsDTO.getUserId());
@@ -63,6 +51,22 @@ public class ProductsService
         products.setUsers(users);
 
         return productsRepo.save(products);
+    }
+
+    public List<ViewProductFilter> product_filter_product_name(String productName)
+    {
+//        String chaining = "'%"+productName+"%'";
+            return vwProductRepo.findByProductNameLike(productName);
+    }
+
+    public List<ViewProductFilter> product_filter_category_name(String categoryName)
+    {
+        return vwProductRepo.findByCategoryNameLike(categoryName);
+    }
+
+    public List<ViewProductFilter> product_filter_price(BigDecimal minPrice, BigDecimal maxPrice)
+    {
+        return vwProductRepo.findByPrice(minPrice, maxPrice);
     }
 
     public List<Products> latest_product()
@@ -110,9 +114,10 @@ public class ProductsService
 
         return productsRepo.save(products);
     }
+}
 
 //    public void delete_product(Long productId)
 //    {
 //        ImageProducts imageProducts =
 //    }
-}
+//}
