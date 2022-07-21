@@ -60,7 +60,7 @@ public class WishlistsController
     }
 
     @DeleteMapping("/delete-all/{id}")
-    public ResponseEntity<?> wishlist_delet_all(@PathVariable("id") Long userId)
+    public ResponseEntity<?> wishlist_delete_all(@PathVariable("id") Long userId)
     {
         wishlistsService.delete_all_wishlist_by_userId(userId);
         return new ResponseEntity<>(new ResponseDTO("200", "Semua Produk Favorit Berhasil Dihapus"), HttpStatus.OK);
