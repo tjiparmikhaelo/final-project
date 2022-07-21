@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -43,30 +42,14 @@ public class ProductsController {
         productsService.imageProduct(photo4, products);
         return new ResponseEntity<>(new ResponseDTO("201", "Produk Berhasil Ditambahkan"), HttpStatus.CREATED);
     }
-    @GetMapping("/withfilter")
+    @GetMapping("/all")
     public ResponseEntity<?> productsWithFilter(
-            @RequestParam(value = "productName", required = false) String productName,
-            @RequestParam(value = "categoryName", required = false) String categoryName,
-            @RequestParam(value = "minPrice", required = false)BigDecimal minPrice,
-            @RequestParam(value = "maxPrice", required = false)BigDecimal maxPrice
+            @RequestParam(value = "productName") String productName,
+            @RequestParam(value = "categoryId") Long categoryId,
+            @RequestParam(value = "idCity")Long idCity
             )
     {
-        if(productName != null)
-        {
-            return new ResponseEntity<>(productsService.product_filter_product_name(productName), HttpStatus.OK);
-        }
-        else if(categoryName != null)
-        {
-            return new ResponseEntity<>(productsService.product_filter_category_name(categoryName), HttpStatus.OK);
-        }
-        else if (minPrice != null && maxPrice != null)
-        {
-            return new ResponseEntity<>(productsService.product_filter_price(minPrice, maxPrice), HttpStatus.OK);
-        }
-        else
-        {
-            return new ResponseEntity<>(new ResponseDTO("404", "Produk Gagal Ditampilkan"), HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Ditampilkan", productsService.filter(productName, categoryId, idCity)), HttpStatus.OK);
     }
     @GetMapping("/latest")
     public ResponseEntity<?> latest_product()

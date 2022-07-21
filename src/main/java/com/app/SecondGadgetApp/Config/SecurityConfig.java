@@ -62,69 +62,65 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 "/user/display-by-id/{user_id}",
                 "/user/profile/{username}",
                 "/user/verification",
-                "/user/update-user/{userId}",
+                "/user/edit/{userId}",
                 "/user/delete-user/{user_id}",
-                "/city/**"
+                "/city/**",
+                "/swagger-ui.html/**",
+                "/swagger-resources/**",
+                "/swagger-ui/**",
+                "/webjars/**",
+                "/v2/api-docs"
         ).permitAll();
         http.authorizeRequests().antMatchers(
-                "/category/add",
-                "/category/all",
-                "/category/edit/{id}",
-                "/category/delete/{id}"
+                "/category/all"
         ).permitAll();
         http.authorizeRequests().antMatchers(
-                "/product/add",
+                "/product/all/**",
                 "/product/latest",
                 "/product/related/{id}",
                 "/product/user/{username}",
                 "/product/detail/{id}",
-                "/product/edit/{id}",
-                "/product/edit/status/{id}"
+                "/bid/buyer/all/{id}",
+                "/bid/seller/all/{id}",
+                "/bid/detail/{id}"
         ).permitAll();
         http.authorizeRequests().antMatchers(
-                "bid/buyer/add",
-                "bid/buyer/all/{id}",
-                "bid/buyer/edit/{id}",
-                "bid/seller/all/{id}",
-                "bid/seller/edit/{id}",
-                "bid/detail/{id}"
+                "/wishlist/check/{userId}/{productId}",
+                "/wishlist/all/{id}",
+                "/wishlist/mini/{id}"
         ).permitAll();
         http.authorizeRequests().antMatchers(
-                "wishlist/buyer/add",
-                "wishlist/check/{userId}/{productId}",
-                "wishlist/all/{id}",
-                "wishlist/mini/{id}"
-        ).permitAll();
-        http.authorizeRequests().antMatchers(
-                "notification/add",
-                "notification/buyer/all/{id}",
-                "notification/seller/all/{id}"
+                "/notification/buyer/all/{id}",
+                "/notification/buyer/mini/{id}",
+                "/notification/seller/all/{id}",
+                "/notification/seller/mini/{id}"
         ).permitAll();
         http.authorizeRequests().antMatchers("/login/**").permitAll();
         http.authorizeRequests().antMatchers(
-                "/product/display-all",
-                        "/product/latest",
-                        "/product/related/{id}",
-                        "/product/user/{username}",
-                        "/product/detail/{id}",
-                        "bid/buyer/add",
-                        "bid/buyer/all/{id}",
-                        "bid/buyer/edit/{id}",
-                        "bid/detail/{id}"
-        )
+                "/bid/buyer/add",
+                        "/wishlist/add",
+                        "/notification/add",
+                        "/buyer/delete/{id}",
+                        "/wishlist/delete/{id}",
+                        "/wishlist/delete-all/{id}",
+                        "notification/buyer/delete/{id}",
+                        "notification/buyer/delete-all/{id}"
+                )
                 .hasAnyAuthority("BUYER");
         http.authorizeRequests().antMatchers(
-                "/category/add",
-                        "/category/all",
-                        "/category/edit/{id}",
-                        "/category/delete/{id}",
-                        "/product/add",
-                        "/product/edit/{id}",
-                        "bid/seller/all/{id}",
-                        "bid/seller/edit/{id}",
-                        "bid/detail/{id}"
-        )
+                "/product/add",
+                        "/notification/add",
+                        "notification/seller/delete/{id}",
+                        "notification/seller/delete-all/{id}"
+                )
                 .hasAnyAuthority("SELLER");
+        http.authorizeRequests().antMatchers(
+                "/admin/**",
+                "/category/add",
+                "/category/edit/{id}",
+                "/category/delete/{id}"
+                )
+                .hasAnyAuthority("ADMIN");
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomizeAuthorFilterConfig(), UsernamePasswordAuthenticationFilter.class);

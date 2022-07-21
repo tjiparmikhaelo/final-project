@@ -16,5 +16,5 @@ public class UsersDTO
     private String description;
     private MultipartFile img;
     private int roleId;
-    private String city;
+    private Long idCity;
 }

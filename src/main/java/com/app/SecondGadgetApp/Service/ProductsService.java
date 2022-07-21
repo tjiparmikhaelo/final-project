@@ -26,8 +26,6 @@ public class ProductsService
     UsersRepo usersRepo;
     @Autowired
     CategoriesRepo categoriesRepo;
-    @Autowired
-    VwProductRepo vwProductRepo;
 
     public String imageProduct(List<MultipartFile> image, Products products)
     {
@@ -57,19 +55,9 @@ public class ProductsService
         return productsRepo.save(products);
     }
 
-    public List<ViewProductFilter> product_filter_product_name(String productName)
+    public List<Products> filter(String productName, Long categoryId, Long cityId)
     {
-        return vwProductRepo.findByProductNameLike(productName);
-    }
-
-    public List<ViewProductFilter> product_filter_category_name(String categoryName)
-    {
-        return vwProductRepo.findByCategoryNameLike(categoryName);
-    }
-
-    public List<ViewProductFilter> product_filter_price(BigDecimal minPrice, BigDecimal maxPrice)
-    {
-        return vwProductRepo.findByPrice(minPrice, maxPrice);
+        return productsRepo.filter(productName, categoryId, cityId);
     }
 
     public List<Products> latest_product()
@@ -84,7 +72,7 @@ public class ProductsService
 
     public List<Products> product_by_user(String username)
     {
-        return productsRepo.findByUsersUsername(username);
+        return productsRepo.findByUsersUsernameOrderByUpdatedAtDesc(username);
     }
 
     public Products detail_product(Long productId)

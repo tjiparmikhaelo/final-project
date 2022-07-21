@@ -53,6 +53,16 @@ public class BidsService
         return bidsRepo.save(bids);
     }
 
+    public void delete_bid_buyer(Long bidId)
+    {
+        Bids bids = bidsRepo.findByBidId(bidId);
+
+        if(bids != null)
+        {
+            bidsRepo.deleteById(bidId);
+        }
+    }
+
     public List<Bids> show_all_bid_seller(Long userId)
     {
         return bidsRepo.findByUsersUserId(userId);

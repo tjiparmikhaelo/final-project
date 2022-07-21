@@ -2,7 +2,9 @@ package com.app.SecondGadgetApp.Repository;
 
 import com.app.SecondGadgetApp.Entity.Products;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +18,10 @@ public interface ProductsRepo extends JpaRepository<Products, Long>
     List<Products> ProductDesc();
     List<Products> findByProductName(String productName);
     Products findByProductId(Long productId);
-    List<Products> findByUsersUsername(String username);
+    List<Products> findByUsersUsernameOrderByUpdatedAtDesc(String username);
     @Query("select p from Products p where p.categories.categoryId = ?1 order by created_at desc")
     List<Products> findByCategoriesCategoryId(Long categoryId);
+    @Modifying
+    @Query(value = "select * from products p join users u on p.user_id = u.user_id where p.product_name like concat ('%',:productName,'%') and p.category_id = :categoryId and u.city_id = :idCity order by p.created_at desc", nativeQuery = true)
+    List<Products> filter(String productName, Long categoryId, Long idCity);
 }

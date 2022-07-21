@@ -1,10 +1,12 @@
 package com.app.SecondGadgetApp.Entity;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
-
 @Getter
 @Setter
 @Entity
@@ -49,6 +51,15 @@ public class Users
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
 
-    @Column(name = "city")
-    private String city;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "city_id")
+    private City cities;
+
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private Date updatedAt;
 }

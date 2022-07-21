@@ -35,6 +35,13 @@ public class BidsController
         return new ResponseEntity<>(new ResponseDTO("200", "Penawaran Berhasil Diupdate"), HttpStatus.OK);
     }
 
+    @DeleteMapping("buyer/delete/{id}")
+    public ResponseEntity<?> delete_bid_buyer(@PathVariable("id") Long bidId)
+    {
+        bidsService.delete_bid_buyer(bidId);
+        return new ResponseEntity<>(new ResponseDTO("200", "Penawaran Berhasil Dibatalkan"), HttpStatus.OK);
+    }
+
     @GetMapping("seller/all/{id}")
     public ResponseEntity<?> show_all_bid_seller(@PathVariable("id") Long userId)
     {

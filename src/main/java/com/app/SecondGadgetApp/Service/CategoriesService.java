@@ -5,10 +5,12 @@ import com.app.SecondGadgetApp.Entity.Categories;
 import com.app.SecondGadgetApp.Repository.CategoriesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
+@Transactional
 @Service
 public class CategoriesService
 {
@@ -30,7 +32,7 @@ public class CategoriesService
 
     public List<Categories> show_all()
     {
-        return categoriesRepo.findAll();
+        return categoriesRepo.showAll();
     }
 
     public Categories edit_category(Long id, CategoriesDTO categoriesDTO)

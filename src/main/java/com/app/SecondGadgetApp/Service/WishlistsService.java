@@ -10,9 +10,11 @@ import com.app.SecondGadgetApp.Repository.UsersRepo;
 import com.app.SecondGadgetApp.Repository.WishlistsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 @Service
 public class WishlistsService {
     @Autowired
@@ -46,6 +48,26 @@ public class WishlistsService {
 
     public List<Wishlists> wishlist_mini(Long userId)
     {
-        return wishlistsRepo.findByUsersUserId(userId);
+        return wishlistsRepo.miniWishlist(userId);
+    }
+
+    public void delete_wishlist(Long wishlistId)
+    {
+        wishlistsRepo.findByWishlistId(wishlistId);
+
+        if (wishlistsRepo.findByWishlistId(wishlistId) != null)
+        {
+            wishlistsRepo.deleteById(wishlistId);
+        }
+    }
+
+    public void delete_all_wishlist_by_userId(Long userId)
+    {
+        wishlistsRepo.findByUsersUserId(userId);
+
+        if(wishlistsRepo.findByUsersUserId(userId) != null)
+        {
+            wishlistsRepo.deleteAllByUsersUserId(userId);
+        }
     }
 }
