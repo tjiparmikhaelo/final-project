@@ -118,7 +118,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 "/admin/**",
                 "/category/add",
                 "/category/edit/{id}",
-                "/category/delete/{id}"
+                "/category/delete/{id}",
+                "/carousel/**"
                 )
                 .hasAnyAuthority("ADMIN");
         http.authorizeRequests().anyRequest().authenticated();
