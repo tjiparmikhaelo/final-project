@@ -2,12 +2,15 @@ package com.app.SecondGadgetApp.Controller;
 
 import com.app.SecondGadgetApp.Dto.ResponseDTO;
 import com.app.SecondGadgetApp.Dto.WishlistsDTO;
+import com.app.SecondGadgetApp.Entity.Wishlists;
 import com.app.SecondGadgetApp.Service.WishlistsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/wishlist")
@@ -30,26 +33,36 @@ public class WishlistsController
             @PathVariable("productId") Long productId
             )
     {
-        if (wishlistsService.check_wishlist(userId, productId) != null)
-        {
-            return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Dicek", wishlistsService.check_wishlist(userId, productId)), HttpStatus.OK);
-        }
-        else
-        {
-            return new ResponseEntity<>(new ResponseDTO("404", "Produk Favorit Ditdak Ditemukan"), HttpStatus.BAD_REQUEST);
-        }
+        String wishlists = wishlistsService.check_wishlist(userId, productId);
+        return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Dicek", wishlists), HttpStatus.OK);
     }
 
     @GetMapping("/all/{id}")
     public ResponseEntity<?> wishlist_all(@PathVariable("id") Long userId)
     {
-        return new ResponseEntity<>(new ResponseDTO("200", "Produk Favorit Berhasil Ditampilkan", wishlistsService.wishlist_all(userId)), HttpStatus.OK);
+        ResponseDTO wishlists = wishlistsService.wishlist_all(userId);
+        if (wishlists != null)
+        {
+            return new ResponseEntity<>(wishlists, HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/mini/{id}")
     public ResponseEntity<?> wishlist_mini(@PathVariable("id") Long userId)
     {
-        return new ResponseEntity<>(new ResponseDTO("200", "Produk Favorit Berhasil Ditampilkan", wishlistsService.wishlist_mini(userId)), HttpStatus.OK);
+        List<Wishlists> wishlists = wishlistsService.wishlist_mini(userId);
+        if (wishlists != null)
+        {
+            return new ResponseEntity<>(new ResponseDTO("200", "Produk Favorit Berhasil Ditampilkan", wishlists), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>(new ResponseDTO("400", "Produk Favorit Gagal Ditampilkan"), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/delete/{id}")

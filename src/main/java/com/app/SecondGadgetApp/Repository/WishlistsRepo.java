@@ -17,7 +17,7 @@ public interface WishlistsRepo extends JpaRepository<Wishlists, Long>
     List<Wishlists> findByUsersUserId(Long userId);
     @Query(value = "select * from wishlist w where w.user_id = ?1 order by created_at desc limit 5", nativeQuery = true)
     List<Wishlists> miniWishlist(Long userId);
-    List<Wishlists> findByUsersUserIdAndProductsProductId(Long userId, Long productId);
+    Wishlists findByUsersUserIdAndProductsProductId(Long userId, Long productId);
     Wishlists findByWishlistId(Long wishlistId);
     List<Wishlists> deleteAllByUsersUserId(Long userId);
 }

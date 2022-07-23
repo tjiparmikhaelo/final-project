@@ -36,14 +36,30 @@ public class WishlistsService {
         return wishlistsRepo.save(wishlists);
     }
 
-    public List<Wishlists> check_wishlist(Long userId, Long productId)
+    public String check_wishlist(Long userId, Long productId)
     {
-        return wishlistsRepo.findByUsersUserIdAndProductsProductId(userId, productId);
+        Wishlists wishlists = wishlistsRepo.findByUsersUserIdAndProductsProductId(userId, productId);
+        if(wishlists != null)
+        {
+            return "true";
+        }
+        else
+        {
+            return "false";
+        }
     }
 
-    public List<Wishlists> wishlist_all(Long userId)
+    public ResponseDTO wishlist_all(Long userId)
     {
-        return wishlistsRepo.findByUsersUserId(userId);
+        List<Wishlists> wishlists = wishlistsRepo.findByUsersUserId(userId);
+        if(wishlists != null)
+        {
+            return new ResponseDTO("200", "Produk Favorit Berhasil Ditampilkan", wishlists);
+        }
+        else
+        {
+           return new ResponseDTO("400", "Produk Favorit Gagal Ditampilkan");
+        }
     }
 
     public List<Wishlists> wishlist_mini(Long userId)
