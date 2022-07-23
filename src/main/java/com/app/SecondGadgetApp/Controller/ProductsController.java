@@ -9,6 +9,7 @@ import com.app.SecondGadgetApp.Service.ProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,58 +50,70 @@ public class ProductsController {
             @RequestParam(value = "idCity")Long idCity
             )
     {
-        return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Ditampilkan", productsService.filter(productName, categoryId, idCity)), HttpStatus.OK);
+        List<Products> products = productsService.filter(productName, categoryId, idCity);
+        if(products != null)
+        {
+            return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Ditampilkan", products), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>(new ResponseDTO("400", "Produk Gagal Ditambahkan"), HttpStatus.BAD_REQUEST);
+        }
     }
     @GetMapping("/latest")
     public ResponseEntity<?> latest_product()
     {
-        if(productsService.latest_product() != null)
+        List<Products> products = productsService.latest_product();
+        if(products != null)
         {
-            return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Ditampilkan", productsService.latest_product()), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Ditampilkan", products), HttpStatus.OK);
 
         }
         else
         {
-            return new ResponseEntity<>(new ResponseDTO("404", "Produk Gagal Ditampilkan"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseDTO("400", "Produk Gagal Ditampilkan"), HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/related/{id}")
     public ResponseEntity<?> related_product(@PathVariable("id") Long categoryId)
     {
-        if(productsService.related_product(categoryId) != null)
+        List<Products> products = productsService.related_product(categoryId);
+        if(products != null)
         {
-            return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Ditampilkan", productsService.related_product(categoryId)), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Ditampilkan", products), HttpStatus.OK);
         }
         else
         {
-            return new ResponseEntity<>(new ResponseDTO("404", "Produk Gagal Ditampilkan"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseDTO("400", "Produk Gagal Ditampilkan"), HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/user/{username}")
     public ResponseEntity<?> product_by_user(@PathVariable("username") String username)
     {
-        if(productsService.product_by_user(username) != null)
+        List<Products> products = productsService.product_by_user(username);
+        if(products != null)
         {
-            return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Ditampilkan", productsService.product_by_user(username)), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Ditampilkan", products), HttpStatus.OK);
         }
         else
         {
-            return new ResponseEntity<>(new ResponseDTO("404", "Produk Gagal Ditampilkan"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseDTO("400", "Produk Gagal Ditampilkan"), HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/detail/{id}")
     public ResponseEntity<?> detail_product(@PathVariable("id") Long productId)
     {
-        if(productsService.detail_product(productId) != null)
+        Products products = productsService.detail_product(productId);
+        if(products != null)
         {
-            return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Ditampilkan", productsService.detail_product(productId)), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Ditampilkan", products), HttpStatus.OK);
         }
         else
         {
-            return new ResponseEntity<>(new ResponseDTO("404", "Produk Gagal Ditampilkan"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseDTO("400", "Produk Gagal Ditampilkan"), HttpStatus.BAD_REQUEST);
         }
     }
 

@@ -26,6 +26,6 @@ public interface NotificationsRepo extends JpaRepository<Notifications, Long>
     List<Notifications> miniBuyer(Long userId);
 
     @Modifying
-    @Query(value = "select * from notifications n join bids b on n.bid_id = b.bid_id join products p on b.product_id = p.product_id where p.user_id = 2 order by n.created_at desc limit 4", nativeQuery = true)
+    @Query(value = "select * from notifications n join bids b on n.bid_id = b.bid_id join products p on b.product_id = p.product_id where p.user_id = ?1 order by n.created_at desc limit 4", nativeQuery = true)
     List<Notifications> miniSeller(Long userId);
 }

@@ -72,7 +72,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 "/v2/api-docs"
         ).permitAll();
         http.authorizeRequests().antMatchers(
-                "/category/all"
+                "/category/all",
+                "/category/show/{id}"
         ).permitAll();
         http.authorizeRequests().antMatchers(
                 "/product/all/**",

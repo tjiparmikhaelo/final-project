@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/category")
 public class CategoriesController
@@ -19,35 +21,56 @@ public class CategoriesController
     @PostMapping("/add")
     public ResponseEntity<?> add_category(CategoriesDTO categoriesDTO)
     {
-
-        categoriesService.add_category(categoriesDTO);
-        return new ResponseEntity<>(new ResponseDTO("201", "Kategori Telah Ditambahkan"), HttpStatus.CREATED);
+        Categories categories = categoriesService.add_category(categoriesDTO);
+        if (categories != null)
+        {
+            return new ResponseEntity<>(new ResponseDTO("201", "Kategori Telah Ditambahkan"), HttpStatus.CREATED);
+        }
+        else
+        {
+            return new ResponseEntity<>(new ResponseDTO("404", "Kategori Gagal Ditambahkan"), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/all")
     public ResponseEntity<?> all_category()
     {
-        if (categoriesService.show_all() != null)
+        List<Categories> display = categoriesService.show_all();
+        if (display != null)
         {
             return new ResponseEntity<>(new ResponseDTO("201", "Kategori Berhasil Ditampilkan", categoriesService.show_all()), HttpStatus.CREATED);
         }
         else
         {
-            return new ResponseEntity<>(new ResponseDTO("404", "Kategori Tidak Ditemukan"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseDTO("404", "Kategori Gagal Ditampilkan"), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/show/{id}")
+    public ResponseEntity<?> category_by_id(@PathVariable("id") Long categoryId)
+    {
+        Categories categories = categoriesService.show_by_id(categoryId);
+        if(categories != null)
+        {
+            return new ResponseEntity<>(new ResponseDTO("200", "Kategori Berhasil Ditampilkan", categories), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>(new ResponseDTO("400", "Kategori Tidak Ditemukan"), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("/edit/{id}")
     public ResponseEntity<?> edit_category(@PathVariable("id") Long categoryId, @RequestBody CategoriesDTO categoriesDTO)
     {
-        if (categoriesService.edit_category(categoryId, categoriesDTO) != null)
+        Categories update = categoriesService.edit_category(categoryId, categoriesDTO);
+        if (update != null)
         {
-            Categories update = categoriesService.edit_category(categoryId, categoriesDTO);
             return new ResponseEntity<>(new ResponseDTO("200", "Kategori Berhasil Diperbarui", update), HttpStatus.OK);
         }
         else
         {
-            return new ResponseEntity<>(new ResponseDTO("404", "Kategori Gagal Diperbarui"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseDTO("400", "Kategori Gagal Diperbarui"), HttpStatus.BAD_REQUEST);
         }
     }
 

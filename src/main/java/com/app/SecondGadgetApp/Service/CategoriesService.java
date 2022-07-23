@@ -35,12 +35,15 @@ public class CategoriesService
         return categoriesRepo.showAll();
     }
 
+    public Categories show_by_id(Long categoryId)
+    {
+        return categoriesRepo.findByCategoryId(categoryId);
+    }
+
     public Categories edit_category(Long id, CategoriesDTO categoriesDTO)
     {
         Categories update = categoriesRepo.findByCategoryId(id);
         update.setCategoryName(categoriesDTO.getCategoryName());
-        Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageServices.upload(categoriesDTO.getImage()).getData();
-        update.setImage(uploadImage.get("url").toString());
 
         return categoriesRepo.save(update);
     }
