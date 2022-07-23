@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -67,12 +66,12 @@ public class ProductsService
 
     public List<Products> related_product(Long categoryId)
     {
-        return productsRepo.findByCategoriesCategoryId(categoryId);
+        return productsRepo.ProductByCategory(categoryId);
     }
 
     public List<Products> product_by_user(String username)
     {
-        return productsRepo.findByUsersUsernameOrderByUpdatedAtDesc(username);
+        return productsRepo.ProductByUsername(username);
     }
 
     public Products detail_product(Long productId)
