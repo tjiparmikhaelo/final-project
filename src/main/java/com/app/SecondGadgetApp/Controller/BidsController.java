@@ -22,6 +22,16 @@ public class BidsController
         return new ResponseEntity<>(new ResponseDTO("201", "Penawaran Berhasil Ditambahkan"), HttpStatus.CREATED);
     }
 
+    @GetMapping("/check/{userId}/{productId}")
+    public ResponseEntity<?> check_wishlist(
+            @PathVariable("userId") Long userId,
+            @PathVariable("productId") Long productId
+    )
+    {
+        String bids = bidsService.check_bid(userId, productId);
+        return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Dicek", bids), HttpStatus.OK);
+    }
+
     @GetMapping("buyer/all/{id}")
     public ResponseEntity<?> show_all_bid_buyer(@PathVariable("id") Long userId)
     {

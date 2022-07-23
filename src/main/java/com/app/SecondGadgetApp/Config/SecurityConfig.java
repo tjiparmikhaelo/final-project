@@ -81,6 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 "/product/related/{id}",
                 "/product/user/{username}",
                 "/product/detail/{id}",
+                "/bid/check/{userId}/{productId}",
                 "/bid/buyer/all/{id}",
                 "/bid/seller/all/{id}",
                 "/bid/detail/{id}"

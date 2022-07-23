@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NonUniqueResultException;
 import java.util.List;
 
 @Transactional
@@ -67,13 +68,13 @@ public class WishlistsService {
         return wishlistsRepo.miniWishlist(userId);
     }
 
-    public void delete_wishlist(Long wishlistId)
+    public void delete_wishlist(Long productId)
     {
-        wishlistsRepo.findByWishlistId(wishlistId);
+        Wishlists wishlists = wishlistsRepo.findByProductsProductId(productId);
 
-        if (wishlistsRepo.findByWishlistId(wishlistId) != null)
+        if (wishlists != null)
         {
-            wishlistsRepo.deleteById(wishlistId);
+            wishlistsRepo.deleteByProductsProductId(productId);
         }
     }
 

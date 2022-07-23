@@ -4,6 +4,7 @@ import com.app.SecondGadgetApp.Dto.BidsDTO;
 import com.app.SecondGadgetApp.Entity.Bids;
 import com.app.SecondGadgetApp.Entity.Products;
 import com.app.SecondGadgetApp.Entity.Users;
+import com.app.SecondGadgetApp.Entity.Wishlists;
 import com.app.SecondGadgetApp.Repository.BidsRepo;
 import com.app.SecondGadgetApp.Repository.ProductsRepo;
 import com.app.SecondGadgetApp.Repository.UsersRepo;
@@ -36,6 +37,19 @@ public class BidsService
         bids.setBidStatus("pending");
 
         return bidsRepo.save(bids);
+    }
+
+    public String check_bid(Long userId, Long productId)
+    {
+        Bids bids = bidsRepo.findByUsersUserIdAndProductsProductId(userId, productId);
+        if(bids != null)
+        {
+            return "true";
+        }
+        else
+        {
+            return "false";
+        }
     }
 
     public List<Bids> show_all_bid_buyer(Long userId)
