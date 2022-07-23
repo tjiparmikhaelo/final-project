@@ -105,15 +105,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                         "/buyer/delete/{id}",
                         "/wishlist/delete/{id}",
                         "/wishlist/delete-all/{id}",
-                        "notification/buyer/delete/{id}",
-                        "notification/buyer/delete-all/{id}"
+                        "/notification/buyer/delete/{id}",
+                        "/notification/buyer/delete-all/{id}"
                 )
                 .hasAnyAuthority("BUYER");
         http.authorizeRequests().antMatchers(
                 "/product/add",
                         "/notification/add",
-                        "notification/seller/delete/{id}",
-                        "notification/seller/delete-all/{id}"
+                        "/notification/seller/delete/{id}",
+                        "/notification/seller/delete-all/{id}"
                 )
                 .hasAnyAuthority("SELLER");
         http.authorizeRequests().antMatchers(

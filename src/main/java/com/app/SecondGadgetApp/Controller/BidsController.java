@@ -18,8 +18,7 @@ public class BidsController
     @PostMapping("/buyer/add")
     public ResponseEntity<?> add_bid(@RequestBody BidsDTO bidsDTO)
     {
-        bidsService.add_bid(bidsDTO);
-        return new ResponseEntity<>(new ResponseDTO("201", "Penawaran Berhasil Ditambahkan"), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponseDTO("201", "Penawaran Berhasil Ditambahkan", bidsService.add_bid(bidsDTO)), HttpStatus.CREATED);
     }
 
     @GetMapping("/check/{userId}/{productId}")
