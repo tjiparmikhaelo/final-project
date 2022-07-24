@@ -68,13 +68,14 @@ public class WishlistsService {
         return wishlistsRepo.miniWishlist(userId);
     }
 
-    public void delete_wishlist(Long productId)
+    public void delete_wishlist(Long productId, Long userId)
     {
         Wishlists wishlists = wishlistsRepo.findByProductsProductId(productId);
+        List<Wishlists> wishlists1 = wishlistsRepo.findByUsersUserId(userId);
 
         if (wishlists != null)
         {
-            wishlistsRepo.deleteByProductsProductId(productId);
+            wishlistsRepo.deleteByProductsProductId(productId, userId);
         }
     }
 

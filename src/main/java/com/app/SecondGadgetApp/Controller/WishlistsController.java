@@ -66,10 +66,11 @@ public class WishlistsController
         }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> wishlist_delete(@PathVariable("id") Long productId)
+    @DeleteMapping("/delete/{productId}/{userId}")
+    public ResponseEntity<?> wishlist_delete(@PathVariable("productId") Long productId,
+                                             @PathVariable("userId") Long userId)
     {
-        wishlistsService.delete_wishlist(productId);
+        wishlistsService.delete_wishlist(productId, userId);
         return new ResponseEntity<>(new ResponseDTO("200", "Produk Favorit Berhasil Dihapus"), HttpStatus.OK);
     }
 

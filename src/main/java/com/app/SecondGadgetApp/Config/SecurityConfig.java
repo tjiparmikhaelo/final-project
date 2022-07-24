@@ -77,6 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
         ).permitAll();
         http.authorizeRequests().antMatchers(
                 "/product/all/**",
+                "/product/filter-by/**",
                 "/product/latest",
                 "/product/related/{id}",
                 "/product/user/{username}",
@@ -111,6 +112,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 .hasAnyAuthority("BUYER");
         http.authorizeRequests().antMatchers(
                 "/product/add",
+                        "/product/delete/{productId}",
                         "/notification/add",
                         "/notification/seller/delete/{id}",
                         "/notification/seller/delete-all/{id}"

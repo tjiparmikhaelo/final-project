@@ -43,6 +43,7 @@ public class ProductsController {
         productsService.imageProduct(photo4, products);
         return new ResponseEntity<>(new ResponseDTO("201", "Produk Berhasil Ditambahkan"), HttpStatus.CREATED);
     }
+
     @GetMapping("/all")
     public ResponseEntity<?> productsWithFilter(
             @RequestParam(value = "productName") String productName,
@@ -60,6 +61,21 @@ public class ProductsController {
             return new ResponseEntity<>(new ResponseDTO("400", "Produk Gagal Ditambahkan"), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/filter-by")
+    public ResponseEntity<?> filter_by_keyword(@RequestParam(value = "productName") String productName)
+    {
+        List<Products> products =  productsService.filter_by_keyword(productName);
+        if(products != null)
+        {
+            return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Ditampilkan", products), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>(new ResponseDTO("400", "Produk Gagal Ditambahkan"), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/latest")
     public ResponseEntity<?> latest_product()
     {
@@ -129,6 +145,13 @@ public class ProductsController {
     {
         productsService.edit_product_status(productId, productsDTO);
         return new ResponseEntity<>(new ResponseDTO("200", "Status Produk Telah Diupdate"), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{productId}")
+    public ResponseEntity<?> delete_product(@PathVariable("productId") Long productId)
+    {
+        productsService.delete_product(productId);
+        return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Dihapus"), HttpStatus.OK);
     }
 }
 

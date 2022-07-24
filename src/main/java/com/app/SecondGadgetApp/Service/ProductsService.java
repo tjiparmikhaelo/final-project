@@ -59,6 +59,11 @@ public class ProductsService
         return productsRepo.filter(productName, categoryId, cityId);
     }
 
+    public List<Products> filter_by_keyword(String productName)
+    {
+        return productsRepo.findByProductName(productName);
+    }
+
     public List<Products> latest_product()
     {
         return productsRepo.ProductDesc();
@@ -104,10 +109,14 @@ public class ProductsService
 
         return productsRepo.save(products);
     }
-}
 
-//    public void delete_product(Long productId)
-//    {
-//        ImageProducts imageProducts =
-//    }
-//}
+    public void delete_product(Long productId)
+    {
+        Products products = productsRepo.findByProductId(productId);
+
+        if(products != null)
+        {
+            productsRepo.deleteById(productId);
+        }
+    }
+}

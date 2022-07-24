@@ -22,8 +22,8 @@ public interface WishlistsRepo extends JpaRepository<Wishlists, Long>
     Wishlists findByWishlistId(Long wishlistId);
     Wishlists findByProductsProductId(Long productId);
     @Modifying
-    @Query(value = "delete from wishlist w where w.product_id = ?1", nativeQuery = true)
-    void deleteByProductsProductId(Long productId);
+    @Query(value = "delete from wishlist w where w.product_id = ?1 and w.user_id = ?1", nativeQuery = true)
+    void deleteByProductsProductId(Long productId, Long userId);
     @Modifying
     List<Wishlists> deleteAllByUsersUserId(Long userId);
 }

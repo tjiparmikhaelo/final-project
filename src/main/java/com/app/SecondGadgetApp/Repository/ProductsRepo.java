@@ -15,6 +15,7 @@ public interface ProductsRepo extends JpaRepository<Products, Long>
 {
     @Query(value = "select * from products p where not p.product_status = 'archive' and not p.product_status = 'sold' order by created_at desc", nativeQuery = true)
     List<Products> ProductDesc();
+    @Query(value = "select * from products p where p.product_name like concat ('%',:productName,'%') and not p.product_status = 'archive' and not p.product_status = 'sold' order by p.created_at desc", nativeQuery = true)
     List<Products> findByProductName(String productName);
     Products findByProductId(Long productId);
     @Modifying

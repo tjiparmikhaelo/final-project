@@ -31,33 +31,33 @@ public class BidsController
         return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Dicek", bids), HttpStatus.OK);
     }
 
-    @GetMapping("buyer/all/{id}")
+    @GetMapping("seller/all/{id}")
     public ResponseEntity<?> show_all_bid_buyer(@PathVariable("id") Long userId)
     {
         return new ResponseEntity<>(new ResponseDTO("200", "Penawaran Berhasil Ditampilkan", bidsService.show_all_bid_buyer(userId)), HttpStatus.OK);
     }
 
-    @PutMapping("buyer/edit/{id}")
+    @PutMapping("seller/edit/{id}")
     public ResponseEntity<?> edit_buyer(@PathVariable("id") Long bidId, @RequestBody BidsDTO bidsDTO)
     {
         bidsService.edit_bid_buyer(bidId, bidsDTO);
         return new ResponseEntity<>(new ResponseDTO("200", "Penawaran Berhasil Diupdate"), HttpStatus.OK);
     }
 
-    @DeleteMapping("buyer/delete/{id}")
+    @DeleteMapping("seller/delete/{id}")
     public ResponseEntity<?> delete_bid_buyer(@PathVariable("id") Long bidId)
     {
         bidsService.delete_bid_buyer(bidId);
         return new ResponseEntity<>(new ResponseDTO("200", "Penawaran Berhasil Dibatalkan"), HttpStatus.OK);
     }
 
-    @GetMapping("seller/all/{id}")
+    @GetMapping("buyer/all/{id}")
     public ResponseEntity<?> show_all_bid_seller(@PathVariable("id") Long userId)
     {
         return new ResponseEntity<>(new ResponseDTO("200", "Penawaran Berhasil Ditampilkan", bidsService.show_all_bid_seller(userId)), HttpStatus.OK);
     }
 
-    @PutMapping("seller/edit/{id}")
+    @PutMapping("buyer/edit/{id}")
     public ResponseEntity<?> edit_seller(@PathVariable("id") Long bidId, @RequestBody BidsDTO bidsDTO)
     {
         bidsService.edit_bid_seller(bidId, bidsDTO);
