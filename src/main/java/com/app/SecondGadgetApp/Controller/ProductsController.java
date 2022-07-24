@@ -43,7 +43,7 @@ public class ProductsController {
         productsService.imageProduct(photo2, products);
         productsService.imageProduct(photo3, products);
         productsService.imageProduct(photo4, products);
-        return new ResponseEntity<>(new ResponseDTO("201", "Produk Berhasil Ditambahkan"), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponseDTO("201", "Produk Berhasil Ditambahkan", products), HttpStatus.CREATED);
     }
 
     @GetMapping("/all")
