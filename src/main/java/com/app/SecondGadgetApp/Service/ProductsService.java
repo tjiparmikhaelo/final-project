@@ -1,6 +1,7 @@
 package com.app.SecondGadgetApp.Service;
 
-import com.app.SecondGadgetApp.Dto.ProductsDTO;
+import com.app.SecondGadgetApp.Dto.Product.ProductDTOEdit;
+import com.app.SecondGadgetApp.Dto.Product.ProductsDTO;
 import com.app.SecondGadgetApp.Entity.*;
 import com.app.SecondGadgetApp.Repository.*;
 import com.app.SecondGadgetApp.Status.ResultStatus;
@@ -94,51 +95,11 @@ public class ProductsService
         return productsRepo.findByProductId(productId);
     }
 
-//    @Override
-//    public Result updateProduct(ProductDto body, Integer id) {
-//        Kategori kategori = kategoriRepository.findById(body.getIdKategori()).orElseThrow();
-//        Product product = productRepository.findById(id).orElseThrow();
-//
-//        if(body.getImageProduct()== null){
-//
-//            product.setNamaProduct(body.getNamaProduct());
-//            product.setHargaProduct(body.getHargaProduct());
-//            product.setDeskripsiProduct(body.getDeskripsiProduct());
-//            product.setKategori(kategori);
-//            product.setStatusProduct(body.getStatusProduct());
-//            productRepository.save(product);
-//        }else{
-//
-//            product.setNamaProduct(body.getNamaProduct());
-//            product.setHargaProduct(body.getHargaProduct());
-//            product.setDeskripsiProduct(body.getDeskripsiProduct());
-//            product.setKategori(kategori);
-//            product.setStatusProduct(body.getStatusProduct());
-//            productRepository.save(product);
-//            Iterable<ImageProduct> imageProduct = imageRepository.findByProduct(product);
-//
-//            imageRepository.deleteAllInBatch(imageProduct);
-//            for (int i=0; i<body.getImageProduct().size();i++){
-//                Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageService.upload(body.getImageProduct().get(i)).getData();
-//                ImageProduct imageProducts = new ImageProduct();
-//                imageProducts.setProduct(product);
-//                imageProducts.setUrlImage(uploadImage.get("url").toString());
-//                imageRepository.save(imageProducts);
-//            }
-//
-//
-//        }
-//
-//
-//
-//        return new SuccessDataResult<>( "Success Update products");
-//
-//    }
-    public Products edit_product(Long productId, ProductsDTO productsDTO)
+    public ResultStatus edit_product(ProductDTOEdit productsDTO, Long productId)
     {
         Products products = productsRepo.findByProductId(productId);
-        Categories categories = categoriesRepo.findByCategoryId(products.getCategories().getCategoryId());
-        Users users = usersRepo.findByUserId(products.getUsers().getUserId());
+        Categories categories = categoriesRepo.findByCategoryId(productsDTO.getCategoryId());
+        Users users = usersRepo.findByUserId(productsDTO.getUserId());
 
         if (productsDTO.getProductPhoto() == null)
         {
@@ -160,17 +121,19 @@ public class ProductsService
             products.setProductStatus(productsDTO.getProductStatus());
             products.setUsers(users);
 
-//            for (int i=0; i<productsDTO.getProductPhoto().size();i++)
-//            {
-//                Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageService.upload(body.getImageProduct().get(i)).getData();
-//                ImageProduct imageProducts = new ImageProduct();
-//                imageProducts.setProduct(product);
-//                imageProducts.setUrlImage(uploadImage.get("url").toString());
-//                imageRepository.save(imageProducts);
-//            }
+            Iterable<ImageProducts> imageProducts = imageProductsRepo.findByProducts(products);
+            imageProductsRepo.deleteAllInBatch(imageProducts);
+
+            for (int i=0; i<productsDTO.getProductPhoto().size();i++)
+            {
+                Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageServices.upload(productsDTO.getProductPhoto().get(i)).getData();
+                ImageProducts imageProduct = new ImageProducts();
+                imageProduct.setProducts(products);
+                imageProduct.setImageUrl(uploadImage.get("url").toString());
+                imageProductsRepo.save(imageProduct);
+            }
         }
-        return productsRepo.save(products);
-//        return new SuccessDataResult(products1, "Produk Berhasil Diperbarui");
+        return new SuccessDataResult("Produk Berhasil Diperbarui");
     }
 
     public Products edit_product_status(Long productId, ProductsDTO productsDTO)

@@ -1,4 +1,4 @@
-package com.app.SecondGadgetApp.Dto;
+package com.app.SecondGadgetApp.Dto.Product;
 
 import lombok.Getter;
 import lombok.Setter;
