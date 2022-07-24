@@ -1,5 +1,6 @@
 package com.app.SecondGadgetApp.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -19,6 +20,7 @@ public class Notifications
     @Column(name = "notification_id")
     private Long notificationId;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bid_id")
     private Bids bids;
