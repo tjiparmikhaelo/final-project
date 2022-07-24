@@ -61,7 +61,7 @@ public class CategoriesController
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<?> edit_category(@PathVariable("id") Long categoryId, @RequestBody CategoriesDTO categoriesDTO)
+    public ResponseEntity<?> edit_category(@PathVariable("id") Long categoryId, CategoriesDTO categoriesDTO)
     {
         Categories update = categoriesService.edit_category(categoryId, categoriesDTO);
         if (update != null)

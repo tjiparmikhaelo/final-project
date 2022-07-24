@@ -16,6 +16,7 @@ public interface NotificationsRepo extends JpaRepository<Notifications, Long>
     List<Notifications> findByBidsUsersUserIdOrderByCreatedAtDesc(Long userId);
     List<Notifications> findByBidsUsersUserId(Long userId);
     List<Notifications> findByBidsProductsUsersUserId(Long userId);
+    void deleteByBidsProductsProductId(Long productId);
     List<Notifications> deleteByBidsUsersUserId(Long userId);
     List<Notifications> deleteByBidsProductsUsersUserId(Long userId);
     List<Notifications> deleteAllByBidsUsersUserId(Long userId);

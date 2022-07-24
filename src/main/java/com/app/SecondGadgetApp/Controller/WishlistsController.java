@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.NonUniqueResultException;
 import java.util.List;
 
 @RestController
@@ -67,17 +66,16 @@ public class WishlistsController
     }
 
     @DeleteMapping("/delete/{productId}/{userId}")
-    public ResponseEntity<?> wishlist_delete(@PathVariable("productId") Long productId,
-                                             @PathVariable("userId") Long userId)
+    public ResponseEntity<?> wishlist_delete(@PathVariable("productId") Long productId, @PathVariable("userId") Long userId)
     {
         wishlistsService.delete_wishlist(productId, userId);
         return new ResponseEntity<>(new ResponseDTO("200", "Produk Favorit Berhasil Dihapus"), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete-all/{id}")
-    public ResponseEntity<?> wishlist_delete_all(@PathVariable("id") Long userId)
+    public ResponseEntity<?> wishlist_delete_all(@PathVariable("id") Long productId)
     {
-        wishlistsService.delete_all_wishlist_by_userId(userId);
+        wishlistsService.delete_all_wishlist_by_productId(productId);
         return new ResponseEntity<>(new ResponseDTO("200", "Semua Produk Favorit Berhasil Dihapus"), HttpStatus.OK);
     }
 }

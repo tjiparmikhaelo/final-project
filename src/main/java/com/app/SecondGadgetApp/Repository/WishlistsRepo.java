@@ -20,10 +20,11 @@ public interface WishlistsRepo extends JpaRepository<Wishlists, Long>
     List<Wishlists> miniWishlist(Long userId);
     Wishlists findByUsersUserIdAndProductsProductId(Long userId, Long productId);
     Wishlists findByWishlistId(Long wishlistId);
-    Wishlists findByProductsProductId(Long productId);
+    List<Wishlists> findByProductsProductId(Long productId);
     @Modifying
-    @Query(value = "delete from wishlist w where w.product_id = ?1 and w.user_id = ?1", nativeQuery = true)
-    void deleteByProductsProductId(Long productId, Long userId);
+    @Query(value = "delete from wishlist w where w.product_id = ?1", nativeQuery = true)
+    void deleteByProductsProductId(Long productId);
     @Modifying
-    List<Wishlists> deleteAllByUsersUserId(Long userId);
+    @Query(value = "delete from wishlist w where w.product_id = ?1 and w.user_id = ?2", nativeQuery = true)
+    int deleteByProductsProductIdAndUsersUserId(Long productId, Long userId);
 }

@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -63,4 +64,10 @@ public class Products
             orphanRemoval = true
     )
     private Set<ImageProducts> imageProductsSet;
+
+    @OneToMany(
+            mappedBy = "products",
+            cascade = CascadeType.ALL
+    )
+    private List<Bids> bids;
 }

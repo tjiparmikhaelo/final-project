@@ -25,6 +25,12 @@ public class ProductsService
     UsersRepo usersRepo;
     @Autowired
     CategoriesRepo categoriesRepo;
+    @Autowired
+    BidsRepo bidsRepo;
+    @Autowired
+    WishlistsRepo wishlistsRepo;
+    @Autowired
+    NotificationsRepo notificationsRepo;
 
     public String imageProduct(List<MultipartFile> image, Products products)
     {
@@ -116,7 +122,10 @@ public class ProductsService
 
         if(products != null)
         {
-            productsRepo.deleteById(productId);
+//            bidsRepo.deleteByProductsProductId(productId);
+//            wishlistsRepo.deleteByProductsProductId(productId);
+//            notificationsRepo.deleteByBidsProductsProductId(productId);
+            productsRepo.deleteByProductId(productId);
         }
     }
 }

@@ -69,7 +69,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 "/swagger-resources/**",
                 "/swagger-ui/**",
                 "/webjars/**",
-                "/v2/api-docs"
+                "/v2/api-docs",
+                "carousel/display-all"
         ).permitAll();
         http.authorizeRequests().antMatchers(
                 "/category/all",
@@ -123,8 +124,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 "/category/add",
                 "/category/edit/{id}",
                 "/category/delete/{id}",
-                "/carousel/**"
-                )
+                "/carousel/add",
+                "/carousel/edit/{carouselId}",
+                        "/carousel/edit/{carouselId}"
+                        )
                 .hasAnyAuthority("ADMIN");
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);

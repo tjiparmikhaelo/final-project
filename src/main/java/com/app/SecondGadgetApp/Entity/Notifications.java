@@ -19,7 +19,7 @@ public class Notifications
     @Column(name = "notification_id")
     private Long notificationId;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bid_id")
     private Bids bids;
 

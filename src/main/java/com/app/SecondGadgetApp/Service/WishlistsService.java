@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.NonUniqueResultException;
 import java.util.List;
 
 @Transactional
@@ -70,22 +69,16 @@ public class WishlistsService {
 
     public void delete_wishlist(Long productId, Long userId)
     {
-        Wishlists wishlists = wishlistsRepo.findByProductsProductId(productId);
-        List<Wishlists> wishlists1 = wishlistsRepo.findByUsersUserId(userId);
+        wishlistsRepo.deleteByProductsProductIdAndUsersUserId(productId, userId);
+    }
+
+    public void delete_all_wishlist_by_productId(Long productId)
+    {
+        List<Wishlists> wishlists = wishlistsRepo.findByProductsProductId(productId);
 
         if (wishlists != null)
         {
-            wishlistsRepo.deleteByProductsProductId(productId, userId);
-        }
-    }
-
-    public void delete_all_wishlist_by_userId(Long userId)
-    {
-        wishlistsRepo.findByUsersUserId(userId);
-
-        if(wishlistsRepo.findByUsersUserId(userId) != null)
-        {
-            wishlistsRepo.deleteAllByUsersUserId(userId);
+            wishlistsRepo.deleteByProductsProductId(productId);
         }
     }
 }
