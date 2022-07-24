@@ -6,8 +6,10 @@ import com.app.SecondGadgetApp.Entity.Products;
 import com.app.SecondGadgetApp.Repository.ImageProductsRepo;
 import com.app.SecondGadgetApp.Repository.ProductsRepo;
 import com.app.SecondGadgetApp.Service.ProductsService;
+import com.app.SecondGadgetApp.Status.ResultStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
@@ -133,12 +135,26 @@ public class ProductsController {
         }
     }
 
-    @PutMapping("/edit/{id}")
-    public ResponseEntity<?> edit_product(@PathVariable("id") Long productId, @RequestBody ProductsDTO productsDTO)
-    {
-        productsService.edit_product(productId, productsDTO);
-        return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Diupdate"), HttpStatus.OK);
-    }
+//    @PutMapping(value = "/edit/{id}",
+//            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+//            produces = {MediaType.APPLICATION_JSON_VALUE})
+        @PutMapping("/edit/{id}")
+        public ResponseEntity<?> edit_product(
+                @PathVariable("id") Long productId,
+                @RequestBody ProductsDTO productsDTO,
+                @RequestParam(value = "photo1") List<MultipartFile> photo1,
+                @RequestParam(value = "photo2") List<MultipartFile> photo2,
+                @RequestParam(value = "photo3") List<MultipartFile> photo3,
+                @RequestParam(value = "photo4") List<MultipartFile> photo4
+        )
+        {
+            Products products = productsService.edit_product(productId, productsDTO);
+            productsService.imageProduct(photo1, products);
+            productsService.imageProduct(photo2, products);
+            productsService.imageProduct(photo3, products);
+            productsService.imageProduct(photo4, products);
+            return new ResponseEntity<>(new ResponseDTO("200", "Produk Berhasil Diperbarui"), HttpStatus.OK);
+        }
 
     @PutMapping("/edit/status/{id}")
     public ResponseEntity<?> edit_status_product(@PathVariable("id") Long productId, @RequestBody ProductsDTO productsDTO)

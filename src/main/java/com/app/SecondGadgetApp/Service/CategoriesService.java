@@ -43,9 +43,19 @@ public class CategoriesService
     public Categories edit_category(Long id, CategoriesDTO categoriesDTO)
     {
         Categories update = categoriesRepo.findByCategoryId(id);
-        update.setCategoryName(categoriesDTO.getCategoryName());
+        if(categoriesDTO.getImage() == null)
+        {
+            update.setCategoryName(categoriesDTO.getCategoryName());
+            return categoriesRepo.save(update);
+        }
+        else
+        {
+            update.setCategoryName(categoriesDTO.getCategoryName());
+            Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageServices.upload(categoriesDTO.getImage()).getData();
+            update.setImage(uploadImage.get("url").toString());
+            return categoriesRepo.save(update);
+        }
 
-        return categoriesRepo.save(update);
     }
 
     public void delete_category(Long id)

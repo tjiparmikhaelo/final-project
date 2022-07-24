@@ -116,11 +116,6 @@ public class UserController
         return new ResponseEntity<>(userService.deleteUser(user_id), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/search/{username}/{idCity}")
-    public ResponseEntity<?>search_users(@PathVariable String username, @PathVariable Long idCity){
-        return new ResponseEntity<>(userService.searchUsersWithId(username,idCity),HttpStatus.OK);
-    }
-
     @GetMapping("/search/ui")
     public ResponseEntity<?>search_usersParamwithId(@RequestParam(name = "fullName") String fullName, @RequestParam(name = "idCity") Long idCity){
         return new ResponseEntity<>(userService.searchUsersWithId(fullName,idCity),HttpStatus.OK);

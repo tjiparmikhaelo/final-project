@@ -64,13 +64,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 "/user/verification",
                 "/user/edit/{userId}",
                 "/user/delete-user/{user_id}",
+                "/user/search/**",
                 "/city/**",
                 "/swagger-ui.html/**",
                 "/swagger-resources/**",
                 "/swagger-ui/**",
                 "/webjars/**",
                 "/v2/api-docs",
-                "carousel/display-all"
+                "/carousel/all"
         ).permitAll();
         http.authorizeRequests().antMatchers(
                 "/category/all",
