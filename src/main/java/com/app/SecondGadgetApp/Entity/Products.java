@@ -50,17 +50,14 @@ public class Products
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "category_id")
     private Categories categories;
 
-    @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private Users users;
 
-    @JsonIgnore
     @OneToMany(
             mappedBy = "products",
             cascade = CascadeType.ALL,
@@ -68,7 +65,6 @@ public class Products
     )
     private Set<ImageProducts> imageProductsSet;
 
-    @JsonIgnore
     @OneToMany(
             mappedBy = "products",
             cascade = CascadeType.ALL

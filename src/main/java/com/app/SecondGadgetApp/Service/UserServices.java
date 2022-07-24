@@ -4,7 +4,6 @@ import com.app.SecondGadgetApp.Dto.UsersDTO;
 import com.app.SecondGadgetApp.Dto.UsersPassDTO;
 import com.app.SecondGadgetApp.Entity.Users;
 import com.app.SecondGadgetApp.Status.ResultStatus;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,5 +18,6 @@ public interface UserServices {
     ResultStatus getUserById(Long user_id);
     ResultStatus deleteUser(Long user_id);
     ResultStatus update_password(Long user_id, UsersPassDTO usersPassDto);
-    ResultStatus searchUsers(String fullName, Long id_city);
+    ResultStatus searchUsersWithId(String fullName, Long id_city);
+    ResultStatus searchUsers(String fullName);
 }

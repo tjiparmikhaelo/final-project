@@ -45,15 +45,31 @@ public class CarouselsServiceImpl implements CarouselsService {
         return new SuccessDataResult(saved,"Berhasil menambahkan Carousel");
     }
 
+    @Override
+    public ResultStatus getCarouselById(Long carousel_id) {
+        Carousels carousel = carouselRepo.findByCarouselId(carousel_id);
+        return new SuccessDataResult<>(carousel,"Berhasil mendapat data user berdasarkan Id");
+    }
+
 
     public ResultStatus updateCarousel(Long carousel_id, CarouselsDTO carouselDto) {
         Carousels carouselsRepos = carouselRepo.findByCarouselId(carousel_id);
-        carouselsRepos.setCarouselName(carouselDto.getCarouselName());
-        carouselsRepos.setLink(carouselDto.getLink());
-        Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageServices.upload(carouselDto.getImg()).getData();
-        carouselsRepos.setImg(uploadImage.get("url").toString());
-        Carousels saved = carouselRepo.save(carouselsRepos);
-        return new SuccessDataResult(saved,"Carousel Berhasil Diperbarui");
+        if (carouselDto.getImg()==null){
+            carouselsRepos.setCarouselName(carouselDto.getCarouselName());
+            carouselsRepos.setLink(carouselDto.getLink());
+//            Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageServices.upload(carouselDto.getImg()).getData();
+//            carouselsRepos.setImg(uploadImage.get("url").toString());
+            Carousels saved = carouselRepo.save(carouselsRepos);
+            return new SuccessDataResult(saved,"Carousel Berhasil Diperbarui");
+
+        }else {
+            carouselsRepos.setCarouselName(carouselDto.getCarouselName());
+            carouselsRepos.setLink(carouselDto.getLink());
+            Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageServices.upload(carouselDto.getImg()).getData();
+            carouselsRepos.setImg(uploadImage.get("url").toString());
+            Carousels saved = carouselRepo.save(carouselsRepos);
+            return new SuccessDataResult(saved,"Carousel Berhasil Diperbarui");
+        }
     }
 
     @Override

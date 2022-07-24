@@ -20,12 +20,10 @@ public class Wishlists
     @Column(name = "wishlist_id")
     private Long wishlistId;
 
-    @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private Users users;
 
-    @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "product_id")
     private Products products;

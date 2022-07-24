@@ -44,12 +44,18 @@ public class AdminController {
     @PutMapping("/edit/{userId}")
     public ResponseEntity<ResultStatus> update_dataAdmin(@PathVariable long userId , UsersDTO usersDto, Authentication authentication) throws Exception
     {
-        Users users = new Users();
-        users.setFullName(usersDto.getFullName());
-        users.setEmail(usersDto.getEmail());
-        Map<?,?> uploaImage =(Map<?,?>) cloudinaryStorageServices.upload(usersDto.getImg()).getData();
-        users.setImg(uploaImage.get("url").toString());
-        return new ResponseEntity<>(userService.update_admin(userId, usersDto, users), HttpStatus.ACCEPTED);
+        if (usersDto.getImg()==null){
+            Users users = new Users();
+            users.setFullName(usersDto.getFullName());
+            users.setEmail(usersDto.getEmail());
+            return new ResponseEntity<>(userService.update_admin(userId, usersDto, users), HttpStatus.ACCEPTED);
+        }else {
+            Users users = new Users();
+            users.setFullName(usersDto.getFullName());
+            users.setEmail(usersDto.getEmail());
+            Map<?,?> uploaImage =(Map<?,?>) cloudinaryStorageServices.upload(usersDto.getImg()).getData();
+            users.setImg(uploaImage.get("url").toString());
+            return new ResponseEntity<>(userService.update_admin(userId, usersDto, users), HttpStatus.ACCEPTED); }
     }
 
     @PutMapping("/edit/password/{userId}")

@@ -25,7 +25,7 @@ public class CarouselsController {
     @Autowired
     private final CarouselsServiceImpl carouselServicesImpl;
 
-    @GetMapping("/display-all")
+    @GetMapping("/all")
     public ResponseEntity<ResultStatus> getAllUsers()
     {
         return new ResponseEntity<>(carouselServicesImpl.getAllCarousel(), HttpStatus.OK);
@@ -34,6 +34,12 @@ public class CarouselsController {
     @PostMapping("/add")
     public ResponseEntity<?> add_carousel(CarouselsDTO carouselDto) {
         return new ResponseEntity<>(carouselServicesImpl.addCarousel(carouselDto), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/details/{carousel_id}")
+    public ResponseEntity<ResultStatus> getCarouselById(@PathVariable("carousel_id") Long carousel_id)
+    {
+        return new ResponseEntity<>(carouselServices.getCarouselById(carousel_id), HttpStatus.ACCEPTED);
     }
 
     @PutMapping("/edit/{carouselId}")

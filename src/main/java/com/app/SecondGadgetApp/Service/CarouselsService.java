@@ -10,4 +10,5 @@ public interface CarouselsService {
     //    ResultStatus updateCarousel(Long carousel_id, CarouselDto carouselDto);
     ResultStatus deleteCarousel(Long carousel_id);
     ResultStatus addCarousel(CarouselsDTO carouselDto);
+    ResultStatus getCarouselById(Long carousel_id);
 }

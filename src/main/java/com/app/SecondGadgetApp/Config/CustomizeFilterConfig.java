@@ -1,5 +1,8 @@
 package com.app.SecondGadgetApp.Config;
 
+import com.app.SecondGadgetApp.Status.ErrorDataResult;
+import com.app.SecondGadgetApp.Status.ErrorResult;
+import com.app.SecondGadgetApp.Status.ResultStatus;
 import com.app.SecondGadgetApp.Status.SuccessDataResult;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -39,7 +42,6 @@ public class CustomizeFilterConfig extends UsernamePasswordAuthenticationFilter 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String email, password;
-
         try {
             Map<String, String> mapRequest = new ObjectMapper().readValue(request.getInputStream(), Map.class);
             email = mapRequest.get("email");
@@ -50,11 +52,10 @@ public class CustomizeFilterConfig extends UsernamePasswordAuthenticationFilter 
         }
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(email, password);
         return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-
     }
+
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException
-    {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         User user = (User) authResult.getPrincipal();
         Algorithm algorithm = Algorithm.HMAC512("Second".getBytes());
         String accessToken = JWT.create().withSubject(user.getUsername())
@@ -75,7 +76,18 @@ public class CustomizeFilterConfig extends UsernamePasswordAuthenticationFilter 
         map.put("access_token", accessToken);
         map.put("refresh_token", refreshToken);
         response.setContentType(APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(), new SuccessDataResult<>(map,"Success signin"));
+        new ObjectMapper().writeValue(response.getOutputStream(),
+                new SuccessDataResult<>(map,"Login Akun Berhasil!"));
         super.successfulAuthentication(request, response,chain,authResult);
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        response.setStatus(500);
+        Map<String, String> map = new HashMap<>();
+        response.setContentType(APPLICATION_JSON_VALUE);
+        new ObjectMapper().writeValue(response.getOutputStream(),
+                new ErrorResult( "Login Akun Gagal, Mohon Cek Kembali Email dan Password!"));
+        super.unsuccessfulAuthentication(request, response, failed);
     }
 }

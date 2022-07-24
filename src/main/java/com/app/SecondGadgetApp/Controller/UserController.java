@@ -3,17 +3,15 @@ package com.app.SecondGadgetApp.Controller;
 import com.app.SecondGadgetApp.Dto.UsersDTO;
 import com.app.SecondGadgetApp.Dto.UsersPassDTO;
 import com.app.SecondGadgetApp.Entity.Users;
+import com.app.SecondGadgetApp.Repository.UsersRepo;
 import com.app.SecondGadgetApp.Service.CloudinaryStorageServices;
 import com.app.SecondGadgetApp.Service.UserServices;
-//import com.app.SecondGadgetApp.ServicesImpl.UserLoginServiceImpl;
-//import com.app.SecondGadgetApp.Service.UserService;
-//import com.app.SecondGadgetApp.ServicesImpl.CloudinaryServicesImpl;
 import com.app.SecondGadgetApp.ServicesImpl.UserServicesImpl;
 import com.app.SecondGadgetApp.Status.ResultStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,6 +26,9 @@ public class UserController
 {
     @Autowired
     UserServices userService;
+
+    @Autowired
+    UsersRepo userRepo;
 
     @Autowired
     UserServicesImpl userServicesImpl;
@@ -74,19 +75,31 @@ public class UserController
         return new ResponseEntity<>(userService.getVerifiedUser(username), HttpStatus.ACCEPTED);
     }
 
-    @PutMapping("/edit/{userId}")
+    @PutMapping(value = "/edit/{userId}"
+            , consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ResultStatus> update_response(@PathVariable long userId , UsersDTO usersDto, Authentication authentication) throws Exception
     {
-        Users users = new Users();
-        users.setUsername(usersDto.getUsername());
-        users.setFullName(usersDto.getFullName());
-        users.setEmail(usersDto.getEmail());
-        users.setAddress(usersDto.getAddress());
-        users.setPhone(usersDto.getPhone());
-        Map<?,?> uploaImage =(Map<?,?>) cloudinaryStorageServices.upload(usersDto.getImg()).getData();
-        users.setImg(uploaImage.get("url").toString());
-        users.getCities();
-        return new ResponseEntity<>(userService.update_user(userId, usersDto, users), HttpStatus.ACCEPTED);
+        if (usersDto.getImg()==null){
+            Users users = new Users();
+            users.setUsername(usersDto.getUsername());
+            users.setFullName(usersDto.getFullName());
+            users.setEmail(usersDto.getEmail());
+            users.setAddress(usersDto.getAddress());
+            users.setPhone(usersDto.getPhone());
+            users.getCities();
+            return new ResponseEntity<>(userService.update_user(userId, usersDto, users), HttpStatus.ACCEPTED);
+        }else {
+            Users users = new Users();
+            users.setUsername(usersDto.getUsername());
+            users.setFullName(usersDto.getFullName());
+            users.setEmail(usersDto.getEmail());
+            users.setAddress(usersDto.getAddress());
+            users.setPhone(usersDto.getPhone());
+            Map<?,?> uploaImage =(Map<?,?>) cloudinaryStorageServices.upload(usersDto.getImg()).getData();
+            users.setImg(uploaImage.get("url").toString());
+            users.getCities();
+            return new ResponseEntity<>(userService.update_user(userId, usersDto, users), HttpStatus.ACCEPTED);
+        }
     }
 
     @PutMapping("/edit/password/{userId}")
@@ -105,11 +118,16 @@ public class UserController
 
     @GetMapping("/search/{username}/{idCity}")
     public ResponseEntity<?>search_users(@PathVariable String username, @PathVariable Long idCity){
-        return new ResponseEntity<>(userService.searchUsers(username,idCity),HttpStatus.OK);
+        return new ResponseEntity<>(userService.searchUsersWithId(username,idCity),HttpStatus.OK);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<?>search_usersParam(@RequestParam(name = "fullName") String fullName, @RequestParam(name = "idCity") Long idCity){
-        return new ResponseEntity<>(userService.searchUsers(fullName,idCity),HttpStatus.OK);
+    @GetMapping("/search/ui")
+    public ResponseEntity<?>search_usersParamwithId(@RequestParam(name = "fullName") String fullName, @RequestParam(name = "idCity") Long idCity){
+        return new ResponseEntity<>(userService.searchUsersWithId(fullName,idCity),HttpStatus.OK);
+    }
+
+    @GetMapping("/search/u")
+    public ResponseEntity<?>search_usersParam(@RequestParam(name = "fullName") String fullName){
+        return new ResponseEntity<>(userService.searchUsers(fullName),HttpStatus.OK);
     }
 }

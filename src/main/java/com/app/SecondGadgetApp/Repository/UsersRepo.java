@@ -17,6 +17,10 @@ public interface UsersRepo extends JpaRepository<Users, Long>
     Users findByUserId(Long user_id);
     Users findByUsername(String username);
     Users findByEmail(String email);
+
     @Query(value = "select * from users where full_name like CONCAT('%', :fullName, '%') and city_id = :idCity", nativeQuery = true)
-    List<Users> searchUsers(String fullName, Long idCity);
+    List<Users> searchUsersWithId(String fullName, Long idCity);
+
+    @Query(value = "select * from users where users.full_name like CONCAT('%', :fullName, '%') ", nativeQuery = true)
+    List<Users> searchUsers(String fullName);
 }

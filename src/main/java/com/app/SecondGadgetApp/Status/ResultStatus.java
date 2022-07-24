@@ -1,26 +1,29 @@
 package com.app.SecondGadgetApp.Status;
 
-public class ResultStatus {
-    private Integer status;
+public class ResultStatus <A>{
+
+    private  Integer status;
+
     private String message;
-    public ResultStatus(Integer status)
-    {
+
+    private A data;
+
+
+    public ResultStatus(Integer status){
         this.status = status;
     }
 
-    public ResultStatus(Integer status, String message)
-    {
+    public ResultStatus(Integer status, String message, A data){
         this(status);
         this.message = message;
+        this.data = data;
     }
 
-    public Integer getStatus()
-    {
+    public Integer getStatus(){
         return this.status;
     }
 
-    public String getMessage()
-    {
+    public String getMessage() {
         return this.message;
     }
 }

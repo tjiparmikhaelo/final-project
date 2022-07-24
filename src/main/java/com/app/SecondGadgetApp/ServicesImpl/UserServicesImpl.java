@@ -8,15 +8,12 @@ import com.app.SecondGadgetApp.Repository.CityRepo;
 import com.app.SecondGadgetApp.Repository.UsersRepo;
 import com.app.SecondGadgetApp.Repository.UsersRoleRepo;
 import com.app.SecondGadgetApp.Service.UserServices;
-import com.app.SecondGadgetApp.Status.ErrorDataResult;
 import com.app.SecondGadgetApp.Status.ResultStatus;
 import com.app.SecondGadgetApp.Status.SuccessDataResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -59,9 +56,9 @@ public class UserServicesImpl implements UserServices, UserDetailsService {
         Users emailVal = userRepo.findByEmail(usersDto.getEmail());
         Users nameVal = userRepo.findByUsername(usersDto.getUsername());
         if (emailVal != null){
-            return new ErrorDataResult("Email sudah digunakan!");
+            return new ResultStatus(411,"Email sudah digunakan!", null);
         }else if(nameVal != null){
-            return new ErrorDataResult("Username sudah digunakan!");
+            return new ResultStatus(412, "Username sudah digunakan!", null);
         }else{
             Users saved = userRepo.save(saveUsers);
             userRoleRepo.nativeInsert(saved.getUserId(),usersDto.getRoleId());
@@ -91,28 +88,46 @@ public class UserServicesImpl implements UserServices, UserDetailsService {
     @Override
     public ResultStatus update_user(Long user_id, UsersDTO usersDto, Users users) {
         Users usersRepos = this.userRepo.findByUserId(user_id);
-//        Users usersVal =  new Users();
-        Optional<City> cityOptional = cityRepo.findById(usersDto.getIdCity());
-        usersRepos.setUsername(usersDto.getUsername());
-        usersRepos.setFullName(usersDto.getFullName());
-        usersRepos.setAddress(usersDto.getAddress());
-        usersRepos.setEmail(usersDto.getEmail());
-        usersRepos.setPhone(usersDto.getPhone());
-        usersRepos.setImg(users.getImg());
-        usersRepos.setCities(cityOptional.get());
-        Users saved = userRepo.save(usersRepos);
-        return new SuccessDataResult(saved, "Akun Berhasil Diperbarui!");
+        if (usersDto.getImg()==null){
+            Optional<City> cityOptional = cityRepo.findById(usersDto.getIdCity());
+            usersRepos.setUsername(usersDto.getUsername());
+            usersRepos.setFullName(usersDto.getFullName());
+            usersRepos.setAddress(usersDto.getAddress());
+            usersRepos.setEmail(usersDto.getEmail());
+            usersRepos.setPhone(usersDto.getPhone());
+            usersRepos.setCities(cityOptional.get());
+            Users saved = userRepo.save(usersRepos);
+            return new SuccessDataResult(saved, "Akun Berhasil Diperbarui!");
+        }else {
+            Optional<City> cityOptional = cityRepo.findById(usersDto.getIdCity());
+            usersRepos.setUsername(usersDto.getUsername());
+            usersRepos.setFullName(usersDto.getFullName());
+            usersRepos.setAddress(usersDto.getAddress());
+            usersRepos.setEmail(usersDto.getEmail());
+            usersRepos.setPhone(usersDto.getPhone());
+            usersRepos.setImg(users.getImg());
+            usersRepos.setCities(cityOptional.get());
+            Users saved = userRepo.save(usersRepos);
+            return new SuccessDataResult(saved, "Akun Berhasil Diperbarui!");
+        }
     }
 
     @Override
     public ResultStatus update_admin(Long user_id, UsersDTO usersDto, Users users) {
         Users usersRepos = this.userRepo.findByUserId(user_id);
 //        Users usersVal =  new Users();
-        usersRepos.setFullName(usersDto.getFullName());
-        usersRepos.setEmail(usersDto.getEmail());
-        usersRepos.setImg(users.getImg());
-        Users saved = userRepo.save(usersRepos);
-        return new SuccessDataResult(saved, "Akun Berhasil Diperbarui!");
+        if (usersDto.getImg()==null){
+            usersRepos.setFullName(usersDto.getFullName());
+            usersRepos.setEmail(usersDto.getEmail());
+            Users saved = userRepo.save(usersRepos);
+            return new SuccessDataResult(saved, "Akun Berhasil Diperbarui!");
+        }else {
+            usersRepos.setFullName(usersDto.getFullName());
+            usersRepos.setEmail(usersDto.getEmail());
+            usersRepos.setImg(users.getImg());
+            Users saved = userRepo.save(usersRepos);
+            return new SuccessDataResult(saved, "Akun Berhasil Diperbarui!");
+        }
     }
 
     @Override
@@ -133,7 +148,7 @@ public class UserServicesImpl implements UserServices, UserDetailsService {
         if (users != null){
             userRepo.deleteById(user_id);
         }
-        return new ResultStatus(200,"Berhasil menghapus user!");
+        return new ResultStatus(200,"Berhasil menghapus user!", null);
     }
 
     @Override
@@ -145,8 +160,14 @@ public class UserServicesImpl implements UserServices, UserDetailsService {
     }
 
     @Override
-    public ResultStatus searchUsers(String fullName, Long id_city) {
-        List<Users> users = userRepo.searchUsers(fullName, id_city);
+    public ResultStatus searchUsersWithId(String fullName, Long id_city) {
+        List<Users> users = userRepo.searchUsersWithId(fullName, id_city);
+        return new SuccessDataResult(users,"Pengguna Berhasil Ditampilkan!");
+    }
+
+    @Override
+    public ResultStatus searchUsers(String fullName) {
+        List<Users> users = userRepo.searchUsers(fullName);
         return new SuccessDataResult(users,"Pengguna Berhasil Ditampilkan!");
     }
 
