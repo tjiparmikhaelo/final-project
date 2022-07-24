@@ -65,6 +65,7 @@ public class Products
     )
     private Set<ImageProducts> imageProductsSet;
 
+    @JsonIgnore
     @OneToMany(
             mappedBy = "products",
             cascade = CascadeType.ALL
