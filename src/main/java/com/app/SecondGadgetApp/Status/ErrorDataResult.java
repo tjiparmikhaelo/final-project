@@ -6,7 +6,7 @@ public class ErrorDataResult<A> extends DataResult<A> {
     }
 
     public ErrorDataResult(A data, String message){
-        super(data, 500);
+        super(500, message, data);
     }
 
     public ErrorDataResult(){
@@ -14,6 +14,6 @@ public class ErrorDataResult<A> extends DataResult<A> {
     }
 
     public ErrorDataResult(String message){
-        super(null, 500);
+        super(500, message, null);
     }
 }

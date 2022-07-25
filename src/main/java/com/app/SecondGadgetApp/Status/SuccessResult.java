@@ -7,6 +7,6 @@ public class SuccessResult extends ResultStatus{
     }
 
     public SuccessResult(String message){
-        super(200,message, null);
+        super(200,message);
     }
 }

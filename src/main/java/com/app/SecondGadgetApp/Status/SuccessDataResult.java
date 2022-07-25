@@ -6,7 +6,7 @@ public class SuccessDataResult<A> extends DataResult<A>{
     }
 
     public SuccessDataResult(A data, String message){
-        super(data, 200);
+        super(200, message, data);
     }
 
     public SuccessDataResult(){
@@ -14,6 +14,6 @@ public class SuccessDataResult<A> extends DataResult<A>{
     }
 
     public SuccessDataResult(String message){
-        super(null, 200);
+        super(200, message, null);
     }
 }

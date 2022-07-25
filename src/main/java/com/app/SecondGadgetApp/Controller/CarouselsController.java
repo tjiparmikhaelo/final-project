@@ -26,7 +26,7 @@ public class CarouselsController {
     private final CarouselsServiceImpl carouselServicesImpl;
 
     @GetMapping("/all")
-    public ResponseEntity<ResultStatus> getAllUsers()
+    public ResponseEntity<ResultStatus> getALlCarousel()
     {
         return new ResponseEntity<>(carouselServicesImpl.getAllCarousel(), HttpStatus.OK);
     }
@@ -60,5 +60,4 @@ public class CarouselsController {
     {
         return new ResponseEntity<>(carouselServices.deleteCarousel(carousel_id), HttpStatus.ACCEPTED);
     }
-
 }

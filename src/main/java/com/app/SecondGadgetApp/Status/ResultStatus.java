@@ -6,17 +6,13 @@ public class ResultStatus <A>{
 
     private String message;
 
-    private A data;
-
-
     public ResultStatus(Integer status){
         this.status = status;
     }
 
-    public ResultStatus(Integer status, String message, A data){
+    public ResultStatus(Integer status, String message){
         this(status);
         this.message = message;
-        this.data = data;
     }
 
     public Integer getStatus(){

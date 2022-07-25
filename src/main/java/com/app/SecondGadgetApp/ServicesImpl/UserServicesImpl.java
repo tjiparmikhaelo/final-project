@@ -56,9 +56,9 @@ public class UserServicesImpl implements UserServices, UserDetailsService {
         Users emailVal = userRepo.findByEmail(usersDto.getEmail());
         Users nameVal = userRepo.findByUsername(usersDto.getUsername());
         if (emailVal != null){
-            return new ResultStatus(411,"Email sudah digunakan!", null);
+            return new ResultStatus(411,"Email sudah digunakan!");
         }else if(nameVal != null){
-            return new ResultStatus(412, "Username sudah digunakan!", null);
+            return new ResultStatus(412, "Username sudah digunakan!");
         }else{
             Users saved = userRepo.save(saveUsers);
             userRoleRepo.nativeInsert(saved.getUserId(),usersDto.getRoleId());
@@ -148,7 +148,7 @@ public class UserServicesImpl implements UserServices, UserDetailsService {
         if (users != null){
             userRepo.deleteById(user_id);
         }
-        return new ResultStatus(200,"Berhasil menghapus user!", null);
+        return new ResultStatus(200,"Berhasil menghapus user!");
     }
 
     @Override
